@@ -1,0 +1,4 @@
+- flash.each do |name, message|
+  - if message.is_a?(String)
+    .alert{class: "alert-#{name}", id: "flash-#{name}"}
+      = message
