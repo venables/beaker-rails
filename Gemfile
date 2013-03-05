@@ -36,3 +36,14 @@ gem 'jbuilder', '~> 1.0.1'
 
 # To use debugger
 # gem 'debugger'
+
+group :development, :test do
+  gem 'factory_girl_rails', '~> 4.2.1'
+  gem 'rspec-rails',        '~> 2.13.0'
+end
+
+group :test do
+  gem 'database_cleaner', '~> 0.9.1'
+  gem 'faker',            '~> 1.1.2'
+  gem 'shoulda-matchers', '~> 1.4.2'
+end
