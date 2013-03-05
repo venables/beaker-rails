@@ -38,6 +38,8 @@ gem 'jbuilder', '~> 1.0.1'
 # To use debugger
 # gem 'debugger'
 
+gem 'haml-rails', '~> 0.4'
+
 group :development do
   gem 'foreman', require: false
 end
