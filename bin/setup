@@ -1,0 +1,30 @@
+#!/bin/sh
+
+# Run this script immediately after cloning the codebase.
+
+FOREMAN_PORT=5000
+
+# Set up Ruby dependencies
+bundle install --binstubs
+
+# Set up heroku remotes
+git remote add heroku git@heroku.com:beaker-dev.git
+
+# Set up database
+createuser -s beaker
+rake db:setup
+
+# Set up configurable environment variables for Foreman
+if [ ! -f .env ]; then
+  echo "RACK_ENV=development" > .env
+fi
+
+echo "port: $FOREMAN_PORT" > .foreman
+
+# Set up DNS through Pow
+if [ -d ~/.pow ]
+then
+  echo $FOREMAN_PORT > ~/.pow/`basename $PWD`
+else
+  echo "Pow not set up. http://goo.gl/RaDPO"
+fi
