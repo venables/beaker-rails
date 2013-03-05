@@ -4,6 +4,30 @@ class User < ActiveRecord::Base
   validates :email, presence: true, uniqueness: true, format: /.+\@.+\..+/
   validates :password, presence: true, length: { minimum: 6 }, on: :create
 
+  # Public: Authenticate a user with a given email and password.
+  #
+  # email     - A String containing the authenticating User's email.
+  # password  - A String containing the password to use for authentication.
+  #
+  # Examples
+  #
+  #   User.authenticate('unknown@email.com', nil)
+  #   # => nil
+  #
+  #   User.authenticate('valid@email.com', 'invalid')
+  #   # => false
+  #
+  #   User.authenticate('valid@email.com', 'valid')
+  #   # => #<User:..>
+  #
+  # Returns the User record if valid credentials are provided.
+  # Returns false if the password is invalid for the given email address.
+  # Returns nil if the email address was not found in the database.
+  def self.authenticate(email, password)
+    user = where(email: email.try(:downcase)).first
+    user.try(:authenticate, password)
+  end
+
   # Public: Set the user's email address, forcing it to lowercase.
   #
   # new_email - The email address to use

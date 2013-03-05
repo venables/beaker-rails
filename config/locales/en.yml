@@ -22,10 +22,12 @@
 en:
   activerecord:
     attributes:
-      user:
-        email: E-mail address
+      user: &user_attributes
+        email: Email address
         password: Password
         password_confirmation: Password, again
+  authentication:
+    required: You must be signed in to do that
   layouts:
     application:
       title: Beaker
@@ -33,6 +35,19 @@ en:
     home:
       title: Welcome
       sign_up: Sign up
+      sign_in: Sign in
+      signed_in_as: Signed in as %{email}
+      sign_out: Sign out
+  sessions:
+    create:
+      success: Welcome back!
+      failure: Invalid email or password
+    destroy:
+      success: Goodbye
+    new:
+      <<: *user_attributes
+      title: Sign in
+      sign_in: Sign in
   users:
     create:
       success: Welcome to our site

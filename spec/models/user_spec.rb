@@ -22,6 +22,30 @@ describe User do
     it { should validate_uniqueness_of(:email) }
   end
 
+  describe '.authenticate' do
+    context 'with an unknown email address' do
+      it 'returns nil' do
+        User.authenticate('unknown', user.password).should be_nil
+      end
+    end
+
+    context 'with a known email address' do
+      let(:user) { FactoryGirl.create(:user) }
+
+      context 'with an invalid password' do
+        it 'returns nil' do
+          User.authenticate(user.email, 'invalid').should be_false
+        end
+      end
+
+      context 'with a valid password' do
+        it 'returns the User' do
+          User.authenticate(user.email, user.password).should == user
+        end
+      end
+    end
+  end
+
   describe '#email=' do
     context 'given a nil value' do
       it 'sets :email to nil' do

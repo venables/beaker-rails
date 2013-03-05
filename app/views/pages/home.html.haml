@@ -1,3 +1,8 @@
 %h1= t('.title')
 
-%p= link_to t('.sign_up'), new_user_path
+- if signed_in?
+  %p= t('.signed_in_as', email: current_user.email)
+  %p= link_to t('.sign_out'), sign_out_path, method: :delete
+- else
+  %p= link_to t('.sign_up'), new_user_path
+  %p= link_to t('.sign_in'), new_session_path

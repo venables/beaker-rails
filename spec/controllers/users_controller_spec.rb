@@ -1,8 +1,6 @@
 require 'spec_helper'
 
 describe UsersController do
-  let(:user) { FactoryGirl.create(:user) }
-
   describe "#new" do
     it "shows the signup form" do
       get :new
@@ -24,7 +22,8 @@ describe UsersController do
     context 'with valid data' do
       let(:user_params) { FactoryGirl.attributes_for(:user) }
 
-      it "creates the user" do
+      it "creates and authenticates the user" do
+        controller.should_receive(:sign_in)
         post :create, user: user_params
         response.should be_redirect
       end
