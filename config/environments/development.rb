@@ -26,4 +26,7 @@ Beaker::Application.configure do
 
   # Debug mode disables concatenation and preprocessing of assets.
   config.assets.debug = true
+
+  # Use the Letter Opener gem to handle emails
+  config.action_mailer.delivery_method = :letter_opener
 end

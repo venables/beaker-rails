@@ -42,6 +42,7 @@ gem 'haml-rails', '~> 0.4'
 
 group :development do
   gem 'foreman', require: false
+  gem 'letter_opener', '~> 1.1.0'
 end
 
 group :development, :test do
