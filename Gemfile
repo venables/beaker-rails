@@ -52,6 +52,7 @@ group :development, :test do
 end
 
 group :test do
+  gem 'email_spec',       '~> 1.4.0'
   gem 'database_cleaner', '~> 1.0.0.RC1'
   gem 'faker',            '~> 1.1.2'
   gem 'shoulda-matchers', '~> 1.4.2'

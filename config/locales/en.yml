@@ -38,6 +38,20 @@ en:
       sign_in: Sign in
       signed_in_as: Signed in as %{email}
       sign_out: Sign out
+  password_resets:
+    create:
+      success: Instructions to reset your password have been emailed to you.
+    edit:
+      <<: *user_attributes
+      title: Reset my password
+      submit: Reset my password
+    new:
+      <<: *user_attributes
+      title: Forgot password
+      submit: Reset my password
+    update:
+      success: Your password has been updated
+      failure: The link you clicked has expired or has already been used.
   sessions:
     create:
       success: Welcome back!
@@ -49,6 +63,16 @@ en:
       title: Sign in
       remember_me: Remember me
       sign_in: Sign in
+      forgot: Forgot?
+  user_mailer:
+    reset_password_email:
+      subject: Reset your password
+      greeting: Hey, %{name}
+      intro: We heard you forgot your password.  To reset it, just visit the following URL
+      closing: Didn't forget your password? Don't worry, just ignore this email.
+      love: Love,
+      signature: The Beaker team
+
   users:
     create:
       success: Welcome to our site

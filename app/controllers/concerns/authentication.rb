@@ -96,6 +96,7 @@ module Authentication
   def sign_in(user, remember_me=false)
     sign_out
     set_user_session(user, remember_me)
+    user.update_attributes(last_login_at: Time.now.utc)
     @current_user = user
   end
 

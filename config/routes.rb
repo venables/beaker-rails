@@ -10,6 +10,8 @@ Beaker::Application.routes.draw do
   resources :sessions, only: [:new, :create, :destroy]
   delete 'sign-out' => 'sessions#destroy', as: 'sign_out'
 
+  resources :password_resets
+
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 

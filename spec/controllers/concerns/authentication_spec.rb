@@ -140,7 +140,9 @@ describe Authentication do
     it "logs out and sets the current_user session" do
       controller.should_receive(:sign_out)
       controller.should_receive(:set_user_session)
-      controller.send(:sign_in, user)
+      expect {
+        controller.send(:sign_in, user)
+      }.to change(user, :last_login_at)
     end
   end
 

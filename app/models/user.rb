@@ -8,6 +8,10 @@ class User < ActiveRecord::Base
     generate_token(:authentication_token)
   end
 
+  before_save do
+    generate_token(:password_reset_token)
+  end
+
   # Public: Authenticate a user with a given email and password.
   #
   # email     - A String containing the authenticating User's email.

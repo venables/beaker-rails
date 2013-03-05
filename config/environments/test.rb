@@ -33,4 +33,7 @@ Beaker::Application.configure do
 
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr
+
+  # Set the default host for URLs
+  config.action_mailer.default_url_options = { host: 'test.host' }
 end

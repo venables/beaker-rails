@@ -29,4 +29,7 @@ Beaker::Application.configure do
 
   # Use the Letter Opener gem to handle emails
   config.action_mailer.delivery_method = :letter_opener
+
+  # Set the default host for URLs
+  config.action_mailer.default_url_options = { host: 'beaker.dev' }
 end
