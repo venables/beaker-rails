@@ -47,6 +47,7 @@ end
 
 group :development, :test do
   gem 'factory_girl_rails', '~> 4.2.1'
+  gem 'pry-rails'
   gem 'rspec-rails',        '~> 2.13.0'
 end
 
