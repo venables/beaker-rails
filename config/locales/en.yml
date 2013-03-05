@@ -20,9 +20,22 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
+  activerecord:
+    attributes:
+      user:
+        email: E-mail address
+        password: Password
+        password_confirmation: Password, again
   layouts:
     application:
       title: Beaker
   pages:
     home:
       title: Welcome
+      sign_up: Sign up
+  users:
+    create:
+      success: Welcome to our site
+    new:
+      title: Sign up
+      sign_up: Sign up

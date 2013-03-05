@@ -5,6 +5,8 @@ Beaker::Application.routes.draw do
   # You can have the root of your site routed with "root"
   root to: 'pages#home'
 
+  resources :users, only: [:new, :create]
+
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 
