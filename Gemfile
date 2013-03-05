@@ -38,6 +38,10 @@ gem 'jbuilder', '~> 1.0.1'
 # To use debugger
 # gem 'debugger'
 
+group :development do
+  gem 'foreman', require: false
+end
+
 group :development, :test do
   gem 'factory_girl_rails', '~> 4.2.1'
   gem 'rspec-rails',        '~> 2.13.0'
