@@ -6,7 +6,7 @@ class SessionsController < ApplicationController
 
   def create
     if user = User.authenticate(params[:email], params[:password])
-      sign_in(user)
+      sign_in(user, !!params[:remember_me])
       redirect_to root_url, notice: I18n.t('sessions.create.success')
     else
       flash.now[:alert] = I18n.t('sessions.create.failure')

@@ -1,6 +1,8 @@
 module Authentication
   extend ActiveSupport::Concern
 
+  AUTH_KEY = :user_token
+
   class NotAuthenticated < StandardError; end
 
   included do
@@ -22,9 +24,9 @@ module Authentication
   # Returns the User that is currently authenticated, if any.
   # Returns nil if no user is authenticated.
   def current_user
-    @current_user ||= User.find(session[:user_id]) if session[:user_id]
-  rescue
-    nil
+    return @current_user if @current_user
+    token = session[AUTH_KEY] || cookies.signed[AUTH_KEY]
+    @current_user = User.where(authentication_token: token).first if token
   end
 
   # Public: Is there an authenticated user?
@@ -91,9 +93,9 @@ module Authentication
   #   # => #<User:..>
   #
   # Returns the signed-in user.
-  def sign_in(user)
+  def sign_in(user, remember_me=false)
     sign_out
-    set_user_session(user)
+    set_user_session(user, remember_me)
     @current_user = user
   end
 
@@ -109,19 +111,21 @@ module Authentication
   # Returns nil.
   def sign_out
     reset_session
+    cookies.delete(AUTH_KEY)
     @current_user = nil
   end
 
-  # Internal: Set the "signed-in" session variables for a user.
+  # Internal: Set the "signed-in" session and cookie variables for a given
+  # user, including the remember_me cookie.
   #
   # Examples
   #
   #   set_user_session(user)
-  #   # => 2
   #
-  # Returns the user's id.
-  def set_user_session(user)
-    session[:user_id] = user.id
+  # Returns nothing.
+  def set_user_session(user, remember_me=false)
+    cookies.permanent.signed[AUTH_KEY] = user.authentication_token if remember_me
+    session[AUTH_KEY] = user.authentication_token
   end
 
   # Internal: Handle a '403 Unauthorized' exception. This method is called when

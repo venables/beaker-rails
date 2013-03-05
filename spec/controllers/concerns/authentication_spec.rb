@@ -7,11 +7,17 @@ end
 describe Authentication do
   let(:mock_session) { {} }
   let(:mock_request) { double("request", session: mock_session) }
+  let(:mock_cookies) { double("cookies", signed: signed_cookies, permanent: permanent_cookies) }
+  let(:permanent_cookies) { double("permanent", signed: signed_cookies) }
+  let(:signed_cookies) { {} }
+  let(:auth_key) { DummyController::AUTH_KEY }
+
   let(:controller) { DummyController.new }
   let(:user) { FactoryGirl.build(:user) }
 
   before do
-    controller.instance_variable_set(:@_request, mock_request)
+    controller.stub(cookies: mock_cookies)
+    controller.stub(session: mock_session)
   end
 
   describe "#require_authenticated_user!" do
@@ -65,25 +71,44 @@ describe Authentication do
   end
 
   describe "#current_user" do
-    let(:user_id) { 123 }
-    let(:mock_session) { { user_id: user_id } }
+    let(:user) { FactoryGirl.create(:user) }
 
-    context "without a session[:user_id] variable" do
-      it 'returns nil' do
-        controller.send(:current_user).should be_nil
+    context "without an auth session" do
+      context 'with a valid signed auth cookie' do
+        let(:signed_cookies) { { user_token: user.authentication_token } }
+
+        it "returns the user" do
+          controller.send(:current_user).should == user
+        end
+      end
+
+      context 'with an invalid signed auth cookie' do
+        let(:signed_cookies) { { user_token: 'invalid' } }
+
+        it "returns nil" do
+          controller.send(:current_user).should be_nil
+        end
+      end
+
+      context 'without a signed auth cookie' do
+        it 'returns nil' do
+          controller.send(:current_user).should be_nil
+        end
       end
     end
 
-    context 'with a valid session[:user_id] variable' do
+    context 'with a valid auth session' do
+      let(:mock_session) { { user_token: user.authentication_token } }
+
       it "returns the user" do
-        User.should_receive(:find).with(user_id) { user }
         controller.send(:current_user).should == user
       end
     end
 
-    context "with an invalid session[:user_id] variable" do
+    context "with an invalid auth session" do
+      let(:mock_session) { { user_token: 'invalid' } }
+
       it "returns nil" do
-        User.should_receive(:find) { nil }
         controller.send(:current_user).should be_nil
       end
     end
@@ -126,6 +151,7 @@ describe Authentication do
 
     it "clears all traces of being signed in" do
       controller.should_receive(:reset_session)
+      mock_cookies.should_receive(:delete).with(auth_key)
       controller.send(:sign_out)
       controller.instance_variable_get(:@current_user).should be_nil
     end
@@ -134,9 +160,19 @@ describe Authentication do
   describe "#set_user_session" do
     let(:user) { FactoryGirl.create(:user) }
 
-    it "sets the session[:user_id] variable to the user id" do
-      controller.send(:set_user_session, user)
-      mock_session[:user_id].should == user.id
+    context 'with a remember_me flag' do
+      it "sets the session[auth_key] variable to the user id" do
+        controller.send(:set_user_session, user, true)
+        mock_session[auth_key].should == user.authentication_token
+        signed_cookies[auth_key].should == user.authentication_token
+      end
+    end
+
+    context 'without a remember_me flag' do
+      it "sets the session[auth_key] variable to the user id" do
+        controller.send(:set_user_session, user)
+        mock_session[auth_key].should == user.authentication_token
+      end
     end
   end
 

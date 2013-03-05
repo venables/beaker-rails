@@ -65,4 +65,28 @@ describe User do
       end
     end
   end
+
+  describe '#generate_token' do
+    let(:token) { "m_wz_K0femF4PxXVsLf3hJT0FqvfEey2aBP_u7yeVEM" }
+
+    context 'with a user with this random token' do
+      let!(:existing_user) { FactoryGirl.create(:user) }
+
+      it 'keeps generating random keys until one is found' do
+        SecureRandom.should_receive(:urlsafe_base64).exactly(2).times.and_return(existing_user.authentication_token, token)
+        expect {
+          user.generate_token(:authentication_token)
+        }.to change(user, :authentication_token).to(token)
+      end
+    end
+
+    context 'without a user with the token already' do
+      it 'assigns the unique token to the attribute specified' do
+        SecureRandom.should_receive(:urlsafe_base64).once.and_return(token)
+        expect {
+          user.generate_token(:authentication_token)
+        }.to change(user, :authentication_token).to(token)
+      end
+    end
+  end
 end

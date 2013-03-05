@@ -4,6 +4,10 @@ class User < ActiveRecord::Base
   validates :email, presence: true, uniqueness: true, format: /.+\@.+\..+/
   validates :password, presence: true, length: { minimum: 6 }, on: :create
 
+  before_create do
+    generate_token(:authentication_token)
+  end
+
   # Public: Authenticate a user with a given email and password.
   #
   # email     - A String containing the authenticating User's email.
@@ -39,5 +43,24 @@ class User < ActiveRecord::Base
   # Returns the email address that was written to the model.
   def email=(new_email)
     write_attribute :email, new_email.try(:downcase)
+  end
+
+  # Public: Generate a unique, random token for a given attribute
+  #
+  # attr  - The user attribute that should be set to a unique token
+  #
+  # Examples
+  #
+  #   user.generate_token(:authentication_token)
+  #   # => "AjG3-SDWPm9x59yyuRiaTjRfxRWD-gZswXQTTVfDOyM"
+  #
+  #   user.generate_token(:password_reset_token)
+  #   # => "m_wz_K0femF4PxXVsLf3hJT0FqvfEey2aBP_u7yeVEM"
+  #
+  # Returns a random token that was assigned to the given attribute.
+  def generate_token(attr)
+    begin
+      self[attr] = SecureRandom.urlsafe_base64(32)
+    end while User.where(attr => self[attr]).exists?
   end
 end

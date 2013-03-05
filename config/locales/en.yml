@@ -47,6 +47,7 @@ en:
     new:
       <<: *user_attributes
       title: Sign in
+      remember_me: Remember me
       sign_in: Sign in
   users:
     create:
