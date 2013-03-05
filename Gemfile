@@ -27,7 +27,7 @@ gem 'turbolinks'
 gem 'jbuilder', '~> 1.0.1'
 
 # To use ActiveModel has_secure_password
-# gem 'bcrypt-ruby', '~> 3.0.0'
+gem 'bcrypt-ruby', '~> 3.0.1'
 
 # Use unicorn as the app server
 # gem 'unicorn'
@@ -51,7 +51,7 @@ group :development, :test do
 end
 
 group :test do
-  gem 'database_cleaner', '~> 0.9.1'
+  gem 'database_cleaner', '~> 1.0.0.RC1'
   gem 'faker',            '~> 1.1.2'
   gem 'shoulda-matchers', '~> 1.4.2'
 end
