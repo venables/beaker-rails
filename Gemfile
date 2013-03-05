@@ -54,4 +54,5 @@ group :test do
   gem 'database_cleaner', '~> 1.0.0.RC1'
   gem 'faker',            '~> 1.1.2'
   gem 'shoulda-matchers', '~> 1.4.2'
+  gem 'simplecov',        '~> 0.7.1', require: false
 end

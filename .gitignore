@@ -15,6 +15,9 @@
 /log/*.log
 /tmp
 
+# Simplecov gem
+/coverage
+
 /bin
 .foreman
 .env
