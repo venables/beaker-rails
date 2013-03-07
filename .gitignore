@@ -18,7 +18,6 @@
 # Simplecov gem
 /coverage
 
-/bin
 .foreman
 .env
 
