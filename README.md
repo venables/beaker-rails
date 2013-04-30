@@ -25,20 +25,17 @@ Using what?
 Starting a new app
 ------------------
 
-1. Rename the app files:
+1. Find and replace `Beaker` with `YourAppName`
 
-    ```
-    find . | xargs perl -pi -e 's/Beaker/NewAppName/g'
-    find . | xargs perl -pi -e 's/beaker/new_app_name/g'
-    ```
+2. Find and replace `beaker` with `your_app_name`
 
-2. Generate a new secret token and put it in `./config/initializers/secret_token.rb`
+3. Generate a new secret token and put it in `./config/initializers/secret_token.rb`
 
     ```
     rake secret
     ```
 
-3. Pick a new foreman port in `bin/setup`
+4. Pick a new foreman port in `bin/setup`
 
 Get started
 -----------

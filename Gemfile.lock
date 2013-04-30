@@ -181,6 +181,7 @@ DEPENDENCIES
   pg
   pry-rails
   rails (= 4.0.0.beta1)
+  rake (= 10.0.3)
   rspec-rails (~> 2.13.0)
   sass-rails (~> 4.0.0.beta1)
   shoulda-matchers (~> 1.4.2)
