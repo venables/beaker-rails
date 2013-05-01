@@ -80,4 +80,7 @@ Beaker::Application.configure do
 
   # Set the default host for URLs
   config.action_mailer.default_url_options = { host: 'beaker.com' }
+
+  # Serve static assets
+  config.serve_static_assets = true
 end
