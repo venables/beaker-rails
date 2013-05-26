@@ -23,59 +23,59 @@ en:
   activerecord:
     attributes:
       user: &user_attributes
-        email: Email address
-        password: Password
-        password_confirmation: Password, again
+        email: "Email address"
+        password: "Password"
+        password_confirmation: "Password, again"
   authentication:
-    required: You must be signed in to do that
+    required: "You must be signed in to do that"
   layouts:
     application:
-      title: Beaker
+      title: "Beaker"
   pages:
     home:
-      title: Welcome
-      sign_up: Sign up
-      sign_in: Sign in
-      signed_in_as: Signed in as %{email}
-      sign_out: Sign out
+      title: "Welcome"
+      sign_up: "Sign up"
+      sign_in: "Sign in"
+      signed_in_as: "Signed in as %{email}"
+      sign_out: "Sign out"
   password_resets:
     create:
-      success: Instructions to reset your password have been emailed to you.
+      success: "Instructions to reset your password have been emailed to you."
     edit:
       <<: *user_attributes
-      title: Reset my password
-      submit: Reset my password
+      title: "Reset my password"
+      submit: "Reset my password"
     new:
       <<: *user_attributes
-      title: Forgot password
-      submit: Reset my password
+      title: "Forgot password"
+      submit: "Reset my password"
     update:
-      success: Your password has been updated
-      failure: The link you clicked has expired or has already been used.
+      success: "Your password has been updated"
+      failure: "The link you clicked has expired or has already been used."
   sessions:
     create:
-      success: Welcome back!
-      failure: Invalid email or password
+      success: "Welcome back!"
+      failure: "Invalid email or password"
     destroy:
-      success: Goodbye
+      success: "Goodbye"
     new:
       <<: *user_attributes
-      title: Sign in
-      remember_me: Remember me
-      sign_in: Sign in
-      forgot: Forgot?
+      title: "Sign in"
+      remember_me: "Remember me"
+      sign_in: "Sign in"
+      forgot: "Forgot?"
   user_mailer:
     reset_password_email:
-      subject: Reset your password
-      greeting: Hey, %{name}
-      intro: We heard you forgot your password.  To reset it, just visit the following URL
-      closing: Didn't forget your password? Don't worry, just ignore this email.
-      love: Love,
-      signature: The Beaker team
+      subject: "Reset your password"
+      greeting: "Hey, %{name}"
+      intro: "We heard you forgot your password.  To reset it, just visit the following URL"
+      closing: "Didn't forget your password? Don't worry, just ignore this email."
+      love: "Love,"
+      signature: "The Beaker team"
 
   users:
     create:
-      success: Welcome to our site
+      success: "Welcome to our site"
     new:
-      title: Sign up
-      sign_up: Sign up
+      title: "Sign up"
+      sign_up: "Sign up"
