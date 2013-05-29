@@ -3,69 +3,78 @@ require 'spec_helper'
 describe SessionsController do
   let(:user) { FactoryGirl.create(:user) }
 
-  describe "#new" do
-    context "while signed in" do
+  describe '#new' do
+    context 'while signed in' do
       before { sign_in_user(user) }
 
-      it "redirects to the root url" do
+      it 'redirects to the root url' do
         get :new
-        response.should redirect_to root_url
+
+        expect(response).to redirect_to(root_url)
       end
     end
 
-    context "while not signed in" do
+    context 'while not signed in' do
       before { sign_out_user }
 
-      it "renders the new page" do
+      it 'renders the new page' do
         get :new
-        response.should render_template('new')
+
+        expect(response).to render_template('new')
       end
     end
   end
 
-  describe "#create" do
-    context "while signed in" do
+  describe '#create' do
+    context 'while signed in' do
       before { sign_in_user(user) }
 
-      it "redirects to the root url" do
+      it 'redirects to the root url' do
         post :create, { email: 'something', password: 'something' }
-        response.should redirect_to root_url
+
+        expect(response).to redirect_to(root_url)
       end
     end
 
-    context "with invalid credentials" do
-      it "doesn't sign the user in" do
+    context 'with invalid credentials' do
+      it 'does not sign the user in' do
         post :create, { email: 'invalid', password: 'user' }
-        response.should render_template('new')
-        current_user.should be_nil
+
+        expect(response).to render_template('new')
+        expect(current_user).to be_nil
       end
     end
 
-    context "with valid credentials" do
-      it "signs the user in" do
+    context 'with valid credentials' do
+      it 'signs the user in' do
         post :create, { email: user.email, password: user.password }
-        current_user.should == user
+
+        expect(current_user).to eq(user)
       end
     end
   end
 
-  describe "#destroy" do
-    context "while not signed in" do
+  describe '#destroy' do
+    context 'while not signed in' do
       before { sign_out_user }
 
-      it "redirects to the homepage" do
+      it 'redirects to the homepage' do
         delete :destroy
-        response.should redirect_to(root_url)
+
+        expect(response).to redirect_to(root_url)
       end
     end
 
-    context "while signed in" do
+    context 'while signed in' do
       before { sign_in_user(user) }
 
-      it "signs the user out and redirect to the homepage" do
-        controller.should_receive(:sign_out)
+      it 'signs the user out and redirect to the homepage' do
+        controller.stub(:sign_out)
+
         delete :destroy
-        response.should redirect_to(root_url)
+
+        expect(controller).to have_received(:sign_out)
+        expect(response).to redirect_to(root_url)
       end
     end
   end

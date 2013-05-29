@@ -77,9 +77,9 @@ module Authentication
   #   # <redirect>
   #
   # Returns nil if there's not an authenticated user.
-  # Redirects to the root_url if a user is authenticated.
+  # Redirects to the root_path if a user is authenticated.
   def prevent_authenticated_user!
-    redirect_to(root_url) if signed_in?
+    redirect_to(root_path) if signed_in?
   end
 
   # Internal: Sign in a given user by setting the session and current_user
