@@ -32,4 +32,7 @@ Beaker::Application.configure do
 
   # Set the default host for URLs
   config.action_mailer.default_url_options = { host: 'beaker.dev' }
+
+  # Enable Unicorn logger
+  config.logger = ActiveSupport::Logger.new($stdout)
 end
