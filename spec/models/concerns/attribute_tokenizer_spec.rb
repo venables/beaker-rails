@@ -5,28 +5,48 @@ describe AttributeTokenizer do
   let(:token) { 'm_wz_K0femF4PxXVsLf3hJT0FqvfEey2aBP_u7yeVEM' }
 
   describe '#generate_unique_token' do
-    context 'with a record with this random token' do
+    context 'with an existing record with this token' do
       let!(:existing_user) { FactoryGirl.create(:user) }
 
-      it 'keeps generating random keys until one is found' do
-        user.stub(:random_token).and_return(existing_user.authentication_token, token)
+      it 'keeps generating UUIDs until one is unique' do
+        user.stub(:unique_token).and_return(existing_user.authentication_token, token)
 
         expect {
           user.generate_unique_token(:authentication_token)
         }.to change(user, :authentication_token).to(token)
-        expect(user).to have_received(:random_token).twice
+        expect(user).to have_received(:unique_token).twice
       end
     end
 
-    context 'without a record with the token already' do
+    context 'without an existing record with the token already' do
       it 'assigns the unique token to the attribute specified' do
-        user.stub(:random_token).and_return(token)
+        user.stub(:unique_token).and_return(token)
 
         expect {
           user.generate_unique_token(:authentication_token)
         }.to change(user, :authentication_token).to(token)
-        expect(user).to have_received(:random_token).once
+        expect(user).to have_received(:unique_token).once
       end
+    end
+  end
+
+  describe '#generate_random_token' do
+    it 'assigns the random, non-unique token to the attribute specified' do
+      user.stub(:random_token).and_return(token)
+
+      expect {
+        user.generate_random_token(:authentication_token)
+      }.to change(user, :authentication_token).to(token)
+      expect(user).to have_received(:random_token).once
+    end
+  end
+
+  describe '#random_token' do
+    it 'generates a unique token' do
+      SecureRandom.stub(:uuid) { token }
+
+      expect(user.unique_token).to eq(token)
+      expect(SecureRandom).to have_received(:uuid)
     end
   end
 
