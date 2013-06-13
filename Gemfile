@@ -4,15 +4,15 @@ ruby '2.0.0'
 gem 'rake', '10.0.4'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.0.0.rc1'
+gem 'rails', '4.0.0.rc2'
 
 gem 'pg'
 
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
-  gem 'sass-rails',   '~> 4.0.0.beta1'
-  gem 'coffee-rails', '~> 4.0.0.beta1'
+  gem 'sass-rails',   '~> 4.0.0.rc2'
+  gem 'coffee-rails', '~> 4.0.0.rc2'
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
   # gem 'therubyracer', platforms: :ruby
@@ -26,7 +26,7 @@ gem 'jquery-rails'
 gem 'turbolinks'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 1.3.0'
+gem 'jbuilder', '~> 1.4.2'
 
 # To use ActiveModel has_secure_password
 gem 'bcrypt-ruby', '~> 3.0.1'
@@ -55,8 +55,8 @@ end
 
 group :test do
   gem 'email_spec',       '~> 1.4.0'
-  gem 'database_cleaner', '~> 1.0.0.RC1'
+  gem 'database_cleaner', '~> 1.0.1'
   gem 'faker',            '~> 1.1.2'
-  gem 'shoulda-matchers', '~> 2.0.0'
+  gem 'shoulda-matchers', '~> 2.2.0'
   gem 'simplecov',        '~> 0.7.1', require: false
 end
