@@ -20,5 +20,6 @@
 
 .foreman
 .env
+Procfile.local
 
 .DS_Store
