@@ -15,6 +15,11 @@ gem 'turbolinks'
 gem 'uglifier', '>= 1.0.3'
 gem 'unicorn', '~> 4.6.2'
 
+group :production do
+  # Heroku log & static asset configuration
+  gem 'rails_12factor', '~> 0.0.2'
+end
+
 group :development do
   gem 'foreman', require: false
   gem 'letter_opener', '~> 1.1.0'
