@@ -7,7 +7,6 @@ gem 'pg'
 
 gem 'bcrypt-ruby', '~> 3.0.1'
 gem 'coffee-rails', '~> 4.0.0'
-gem 'haml-rails', '~> 0.4'
 gem 'jbuilder', '~> 1.4.2'
 gem 'jquery-rails'
 gem 'sass-rails', '~> 4.0.0'

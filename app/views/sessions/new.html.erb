@@ -1,0 +1,25 @@
+<h1><%= t('.title') %></h1>
+
+<%= form_tag sessions_path, method: :post do %>
+  <p>
+    <%= label_tag :email, t('.email') %>
+    <%= text_field_tag :email %>
+  </p>
+
+  <p>
+    <%= label_tag :password, t('.password') %>
+    <%= password_field_tag :password %>
+    <%= link_to t('.forgot'), new_password_reset_path %>
+  </p>
+
+  <p>
+    <%= label_tag :remember_me do %>
+      <%= check_box_tag :remember_me, 1, params[:remember_me] %>
+      <%= t('.remember_me') %>
+    <% end %>
+  </p>
+
+  <p>
+    <%= submit_tag t('.sign_in') %>
+  </p>
+<% end %>
