@@ -25,7 +25,7 @@ class PasswordResetsController < ApplicationController
   private
 
   def password_reset_params
-    { password: params[:password], password_confirmation: params[:password_confirmation] }
+    params.permit(:password, :password_confirmation)
   end
 
   def find_user_from_token
