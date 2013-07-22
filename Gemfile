@@ -25,6 +25,7 @@ group :development do
 end
 
 group :development, :test do
+  gem 'dotenv-rails', '~> 0.8.0'
   gem 'factory_girl_rails', '~> 4.2.1'
   gem 'pry-rails'
   gem 'rspec-rails', '~> 2.14.0'

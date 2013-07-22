@@ -38,10 +38,11 @@ Starting a new app
   find . | xargs perl -pi -e 's/beaker/new_app_name/g'
   ```
 
-3. Generate a new secret token **and put it in `./config/initializers/secret_token.rb`**
+3. Create a `.env` file with a unique secret token for your app
 
   ```bash
-  rake secret
+  touch .env
+  echo "SECRET_TOKEN=$(rake secret)" >> .env
   ```
 
 4. Pick a new foreman port in `bin/setup`
