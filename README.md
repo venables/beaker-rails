@@ -1,6 +1,8 @@
 Beaker
 =====
 
+[![Code Climate](https://codeclimate.com/github/venables/beaker.png)](https://codeclimate.com/github/venables/beaker)
+
 A super barebones starter Rails 4 app, following current best practices
 
 ![Beaker](http://f.cl.ly/items/3G0Q3j3U1j462X1M2E0r/beaker.jpg)
