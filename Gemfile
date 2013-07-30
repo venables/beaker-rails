@@ -34,7 +34,6 @@ end
 group :test do
   gem 'email_spec', '~> 1.4.0'
   gem 'database_cleaner', '~> 1.0.1'
-  gem 'faker', '~> 1.1.2'
   gem 'shoulda-matchers', '~> 2.2.0'
   gem 'simplecov', '~> 0.7.1', require: false
 end
