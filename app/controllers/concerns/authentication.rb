@@ -111,7 +111,6 @@ module Authentication
   #
   # Returns nil.
   def sign_out
-    expires_now
     reset_session
     cookies.delete(AUTH_KEY)
     @current_user = nil
