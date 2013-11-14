@@ -1,7 +1,8 @@
 # If you have a very small app you may be able to
 # increase this, but in general 3 workers seems to
 # work best
-worker_processes ENV['RAILS_ENV'] == 'development' ? 1 : 3
+env = ENV['RACK_ENV'] || ENV['RAILS_ENV']
+worker_processes env == 'development' ? 1 : 3
 
 # Load your app into the master before forking
 # workers for super-fast worker spawn times

@@ -1,16 +1,16 @@
 Beaker
-=====
+======
 
 [![Code Climate](https://codeclimate.com/github/venables/beaker.png)](https://codeclimate.com/github/venables/beaker)
 
-A super barebones starter Rails 4 app, following current best practices
+A barebones starter Rails 4 app, following current best practices with a focus on security.
 
 ![Beaker](http://f.cl.ly/items/3G0Q3j3U1j462X1M2E0r/beaker.jpg)
 
 Features/Dependencies
 ---------------------
 
-* Authentication (using `has_secure_password`)
+* Authentication (using bcrypt and `has_secure_password`)
 * User account management
 * Forgot/reset password
 * 100% code coverage
@@ -40,14 +40,9 @@ Starting a new app
   find . | xargs perl -pi -e 's/beaker/new_app_name/g'
   ```
 
-3. Create a `.env` file with a unique secret token for your app
+3. Pick a new foreman port in `bin/setup`
 
-  ```bash
-  touch .env
-  echo "SECRET_TOKEN=$(rake secret)" >> .env
-  ```
-
-4. Pick a new foreman port in `bin/setup`
+4. Run `bin/setup`
 
 5. Delete everything in this README above `Get started`
 

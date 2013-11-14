@@ -17,6 +17,7 @@ rake db:setup
 # Set up configurable environment variables for Foreman
 if [ ! -f .env ]; then
   echo "RACK_ENV=development" > .env
+  echo "SECRET_TOKEN=$(rake secret)" >> .env
 fi
 
 echo "port: $FOREMAN_PORT" > .foreman
