@@ -5,10 +5,10 @@ Beaker::Application.routes.draw do
   # You can have the root of your site routed with "root"
   root to: 'pages#home'
 
-  namespace :api do
-    namespace :v1 do
+  scope :api do
+    scope :v1 do
       resources :password_resets
-      resources :sessions, only: [:new, :create, :destroy]
+      resource :session, only: [:new, :create, :destroy]
       resources :users, only: [:new, :create]
     end
   end
