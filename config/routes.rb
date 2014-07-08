@@ -5,12 +5,13 @@ Beaker::Application.routes.draw do
   # You can have the root of your site routed with "root"
   root to: 'pages#home'
 
-  resources :users, only: [:new, :create]
-
-  resources :sessions, only: [:new, :create, :destroy]
-  delete 'sign-out' => 'sessions#destroy', as: 'sign_out'
-
-  resources :password_resets
+  namespace :api do
+    namespace :v1 do
+      resources :password_resets
+      resources :sessions, only: [:new, :create, :destroy]
+      resources :users, only: [:new, :create]
+    end
+  end
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
