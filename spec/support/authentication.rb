@@ -1,5 +1,5 @@
 def sign_in_user(user)
-  controller.stub(:current_user) { user }
+  allow(controller).to receive(:current_user) { user }
 end
 
 def sign_out_user

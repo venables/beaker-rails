@@ -1,7 +1,6 @@
-require 'spec_helper'
+require 'rails_helper'
 
-describe PasswordResetsController do
-
+describe PasswordResetsController, type: :controller do
   describe '#new' do
     it 'renders the reset password page' do
       get :new
@@ -26,7 +25,7 @@ describe PasswordResetsController do
       let(:user) { FactoryGirl.create(:user) }
 
       it 'sends the password reset instructions to a user' do
-        UserMailer.stub(reset_password_email: email)
+        allow(UserMailer).to receive_messages(reset_password_email: email)
 
         post :create, { email: user.email }
 
@@ -79,7 +78,7 @@ describe PasswordResetsController do
         end
 
         it 'throws an error if passwords are not valid' do
-          User.any_instance.stub(update_attributes: false)
+          allow_any_instance_of(User).to receive_messages(update_attributes: false)
 
           put :update, id: user.password_reset_token, password: '1', password_confirmation: '1'
 

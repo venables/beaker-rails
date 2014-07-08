@@ -1,6 +1,6 @@
-require 'spec_helper'
+require 'rails_helper'
 
-describe UsersController do
+describe UsersController, type: :controller do
   describe '#new' do
     it 'shows the signup form' do
       get :new
@@ -25,7 +25,7 @@ describe UsersController do
       let(:user_params) { FactoryGirl.attributes_for(:user) }
 
       it 'creates and authenticates the user' do
-        controller.stub(:sign_in)
+        allow(controller).to receive(:sign_in)
 
         post :create, user: user_params
 

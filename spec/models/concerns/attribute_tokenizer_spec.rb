@@ -1,6 +1,6 @@
-require 'spec_helper'
+require 'rails_helper'
 
-describe AttributeTokenizer do
+describe AttributeTokenizer, type: :model do
   let(:user) { FactoryGirl.build(:user) }
   let(:token) { 'm_wz_K0femF4PxXVsLf3hJT0FqvfEey2aBP_u7yeVEM' }
 
@@ -9,7 +9,7 @@ describe AttributeTokenizer do
       let!(:existing_user) { FactoryGirl.create(:user) }
 
       it 'keeps generating UUIDs until one is unique' do
-        user.stub(:unique_token).and_return(existing_user.authentication_token, token)
+        allow(user).to receive(:unique_token).and_return(existing_user.authentication_token, token)
 
         expect {
           user.generate_unique_token(:authentication_token)
@@ -20,7 +20,7 @@ describe AttributeTokenizer do
 
     context 'without an existing record with the token already' do
       it 'assigns the unique token to the attribute specified' do
-        user.stub(:unique_token).and_return(token)
+        allow(user).to receive(:unique_token).and_return(token)
 
         expect {
           user.generate_unique_token(:authentication_token)
@@ -32,7 +32,7 @@ describe AttributeTokenizer do
 
   describe '#generate_random_token' do
     it 'assigns the random, non-unique token to the attribute specified' do
-      user.stub(:random_token).and_return(token)
+      allow(user).to receive(:random_token).and_return(token)
 
       expect {
         user.generate_random_token(:authentication_token)
@@ -43,7 +43,7 @@ describe AttributeTokenizer do
 
   describe '#random_token' do
     it 'generates a unique token' do
-      SecureRandom.stub(:uuid) { token }
+      allow(SecureRandom).to receive(:uuid) { token }
 
       expect(user.unique_token).to eq(token)
       expect(SecureRandom).to have_received(:uuid)
@@ -52,7 +52,7 @@ describe AttributeTokenizer do
 
   describe '#random_token' do
     it 'generates a url-safe token' do
-      SecureRandom.stub(:urlsafe_base64) { token }
+      allow(SecureRandom).to receive(:urlsafe_base64) { token }
 
       expect(user.random_token).to eq(token)
       expect(SecureRandom).to have_received(:urlsafe_base64).with(32)

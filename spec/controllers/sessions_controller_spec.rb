@@ -1,6 +1,6 @@
-require 'spec_helper'
+require 'rails_helper'
 
-describe SessionsController do
+describe SessionsController, type: :controller do
   let(:user) { FactoryGirl.create(:user) }
 
   describe '#new' do
@@ -69,7 +69,7 @@ describe SessionsController do
       before { sign_in_user(user) }
 
       it 'signs the user out and redirect to the homepage' do
-        controller.stub(:sign_out)
+        allow(controller).to receive(:sign_out)
 
         delete :destroy
 

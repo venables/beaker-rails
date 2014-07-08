@@ -1,10 +1,10 @@
-require 'spec_helper'
+require 'rails_helper'
 
-describe User do
+describe User, type: :model do
   let(:user) { FactoryGirl.build(:user) }
 
-  it { should validate_presence_of(:email) }
-  it { should validate_presence_of(:password) }
+  it { is_expected.to validate_presence_of(:email) }
+  it { is_expected.to validate_presence_of(:password) }
 
   it 'validates email format' do
     expect(user).to allow_value('a@b.c').for(:email)
@@ -34,7 +34,7 @@ describe User do
 
       context 'with an invalid password' do
         it 'returns nil' do
-          expect(User.authenticate(user.email, 'invalid')).to be_false
+          expect(User.authenticate(user.email, 'invalid')).to be false
         end
       end
 
