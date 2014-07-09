@@ -3,16 +3,20 @@
 angular.module('beakerApp')
   .config(['$routeProvider', '$locationProvider',
     function($routeProvider, $locationProvider) {
+      $locationProvider.html5Mode(true);
+
       $routeProvider
         .when('/', {
           templateUrl: '<%= path_to_asset("static_pages/homepage.html") %>',
           controller: 'HomepageCtrl'
         })
-        .when('/signin', {
+        .when('/session/new', {
           templateUrl: '<%= path_to_asset("sessions/new.html") %>',
-          controller: 'SignInCtrl'
+          controller: 'NewSessionCtrl'
+        })
+        .when('/users/new', {
+          templateUrl: '<%= path_to_asset("users/new.html") %>',
+          controller: 'NewUserCtrl'
         });
-
-      $locationProvider.html5Mode(true);
     }
   ]);

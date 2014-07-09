@@ -1,12 +1,12 @@
 'use strict';
 
 angular.module('beakerApp.controllers')
-  .controller('NewSessionCtrl', ['$scope', 'sessions',
-    function($scope, sessions) {
+  .controller('NewUserCtrl', ['$scope', 'users',
+    function($scope, users) {
       $scope.formData = {};
 
       $scope.submit = function() {
-        sessions
+        users
           .create($scope.formData)
           .success(function(data) {
             console.log(data);

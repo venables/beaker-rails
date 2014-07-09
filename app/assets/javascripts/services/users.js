@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('beakerApp.services')
-  .factory('sessions', ['$http',
+  .factory('users', ['$http',
     function($http) {
       var create = function(data) {
-        return $http.post("/api/v1/session", data);
+        return $http.post("/api/v1/users", { user: data });
       };
 
       return {
