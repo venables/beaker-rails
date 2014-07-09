@@ -2,12 +2,15 @@
 <html lang="en" ng-app="beakerApp">
   <head>
     <title><%= t('.title') %></title>
-    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
-    <%= csrf_meta_tags %>
+    <%= stylesheet_link_tag 'application', media: 'all' %>
   </head>
-  <body>
-    <%= render 'layouts/flash_messages' %>
-    <%= yield %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <body ng-cloak>
+
+    <div ng-view>
+      <%= render 'layouts/flash_messages' %>
+      <%# yield %>
+    </div>
+
+    <%= javascript_include_tag 'application' %>
   </body>
 </html>

@@ -1,0 +1,18 @@
+'use strict';
+
+angular.module('beakerApp')
+  .config(['$routeProvider', '$locationProvider',
+    function($routeProvider, $locationProvider) {
+      $routeProvider
+        .when('/', {
+          templateUrl: '<%= path_to_asset("static_pages/homepage.html") %>',
+          controller: 'HomepageCtrl'
+        })
+        .when('/signin', {
+          templateUrl: '<%= path_to_asset("sessions/new.html") %>',
+          controller: 'SignInCtrl'
+        });
+
+      $locationProvider.html5Mode(true);
+    }
+  ]);

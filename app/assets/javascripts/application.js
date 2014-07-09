@@ -11,5 +11,6 @@
 // GO AFTER THE REQUIRES BELOW.
 //
 //= require angular
+//= require angular-route
 //= require app
 //= require_tree .
