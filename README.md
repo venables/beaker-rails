@@ -22,7 +22,6 @@ Using what?
 * Testing: RSpec
 * Views: Erb
 * Stylesheets: SCSS
-* Javascript: Coffeescript
 
 Starting a new app
 ------------------
