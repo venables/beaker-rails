@@ -12,5 +12,7 @@
 //
 //= require angular
 //= require angular-route
+//= require underscore
+//= require underscore.string
 //= require app
 //= require_tree .

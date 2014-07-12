@@ -1,12 +1,13 @@
 module Authentication
   extend ActiveSupport::Concern
 
-  AUTH_KEY = :user_token
+  AUTH_KEY = 'user_token'
+  SESSION_SECRET = Rails.application.secrets.secret_key_base
 
-  class NotAuthenticated < StandardError; end
+  class NotAuthenticatedError < StandardError; end
 
   included do
-    rescue_from NotAuthenticated, with: :handle_403
+    rescue_from NotAuthenticatedError, with: :render_unauthorized
     helper_method :current_user
     helper_method :signed_in?
   end
@@ -25,7 +26,7 @@ module Authentication
   # Returns nil if no user is authenticated.
   def current_user
     return @current_user if @current_user
-    token = session[AUTH_KEY] || cookies.signed[AUTH_KEY]
+    token = user_authentication_token_from_header
     @current_user = User.where(authentication_token: token).first if token
   end
 
@@ -55,14 +56,14 @@ module Authentication
   #   # => nil
   #
   #   require_authenticated_user!
-  #   # !Authentication::NotAuthenticated
+  #   # !Authentication::NotAuthenticatedError
   #
   # Returns nil if a user is signed in.
-  # Raises an Authentication::NotAuthenticated exception if there's no
+  # Raises an Authentication::NotAuthenticatedError exception if there's no
   #   authenticated user.
   def require_authenticated_user!
     unless signed_in?
-      raise NotAuthenticated.new(I18n.t('authentication.required'))
+      raise NotAuthenticatedError
     end
   end
 
@@ -77,9 +78,11 @@ module Authentication
   #   # <redirect>
   #
   # Returns nil if there's not an authenticated user.
-  # Redirects to the root_path if a user is authenticated.
+  # Renders a 403 Forbidden error if a user is authenticated.
   def prevent_authenticated_user!
-    redirect_to(root_path) if signed_in?
+    if signed_in?
+      render nothing: true, status: :forbidden
+    end
   end
 
   # Internal: Sign in a given user by setting the session and current_user
@@ -95,9 +98,20 @@ module Authentication
   # Returns the signed-in user.
   def sign_in(user, remember_me=false)
     sign_out
-    set_user_session(user, remember_me)
     user.update_attributes(last_login_at: Time.now.utc)
     @current_user = user
+
+    JWT.encode({ AUTH_KEY => user.authentication_token }, SESSION_SECRET, 'HS512')
+  end
+
+  def user_authentication_token_from_header
+    user_auth_token = nil
+
+    authenticate_with_http_token do |token, options|
+      user_auth_token = JWT.decode(token, SESSION_SECRET)[0][AUTH_KEY] rescue nil
+    end
+
+    user_auth_token
   end
 
   # Internal: Sign out the currently signed-in user by resetting the session
@@ -112,33 +126,15 @@ module Authentication
   # Returns nil.
   def sign_out
     reset_session
-    cookies.delete(AUTH_KEY)
     @current_user = nil
   end
 
-  # Internal: Set the "signed-in" session and cookie variables for a given
-  # user, including the remember_me cookie.
+  # Internal: Handle a '401 Unauthorized' exception. This method is called when
+  # an Authentication::NotAuthenticatedError exception is raised.
   #
-  # Examples
-  #
-  #   set_user_session(user)
-  #
-  # Returns nothing.
-  def set_user_session(user, remember_me=false)
-    cookies.permanent.signed[AUTH_KEY] = user.authentication_token if remember_me
-    session[AUTH_KEY] = user.authentication_token
-  end
-
-  # Internal: Handle a '403 Unauthorized' exception. This method is called when
-  # an Authentication::NotAuthenticated exception is raised.
-  #
-  # Examples
-  #
-  #   handle_403(exception)
-  #   # <redirect>
-  #
-  # Redirects to the new session path.
-  def handle_403(e)
-    redirect_to new_session_path, alert: e.message
+  # Responds with a JSON error
+  def render_unauthorized
+    self.headers['WWW-Authenticate'] = 'Token realm="Application"'
+    render json: I18n.t('authentication.required'), status: 401
   end
 end
