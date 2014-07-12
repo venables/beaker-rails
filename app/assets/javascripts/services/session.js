@@ -4,7 +4,6 @@ angular.module('beakerApp.services')
   .factory('session', ['$http', 'users',
     function($http, users) {
       var token;
-      var user;
 
       var create = function(data) {
         return $http
@@ -15,10 +14,14 @@ angular.module('beakerApp.services')
           });
       };
 
+      var destroy = function() {
+        token = null;
+        $http.defaults.headers.common.Authorization = null;
+      };
+
       return {
         create: create,
-        token: token,
-        user: user
+        token: token
       };
     }
   ]);

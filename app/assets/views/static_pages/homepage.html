@@ -1,4 +1,11 @@
 <h1>Beaker</h1>
 
-<p><a href="/session/new">sign in</a></p>
-<p><a href="/users/new">sign up</a></p>
+<div ng-if="currentUser">
+  <p>You're logged in!</p>
+  <p><a href="/signout">sign out</a></p>
+</div>
+
+<div ng-if="!currentUser">
+  <p><a href="/signin">sign in</a></p>
+  <p><a href="/signup">sign up</a></p>
+</div>

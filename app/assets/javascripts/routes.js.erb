@@ -10,11 +10,15 @@ angular.module('beakerApp')
           templateUrl: '<%= path_to_asset("static_pages/homepage.html") %>',
           controller: 'HomepageCtrl'
         })
-        .when('/session/new', {
+        .when('/signin', {
           templateUrl: '<%= path_to_asset("sessions/new.html") %>',
           controller: 'NewSessionCtrl'
         })
-        .when('/users/new', {
+        .when('/signout', {
+          template: '',
+          controller: 'DestroySessionCtrl'
+        })
+        .when('/signup', {
           templateUrl: '<%= path_to_asset("users/new.html") %>',
           controller: 'NewUserCtrl'
         });
