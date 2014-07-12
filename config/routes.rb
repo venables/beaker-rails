@@ -6,7 +6,7 @@ Beaker::Application.routes.draw do
     scope :v1 do
       resources :password_resets
       resource :session, only: [:create, :destroy]
-      resources :users, only: [:create]
+      resources :users, only: [:show, :create]
     end
   end
 
