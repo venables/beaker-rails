@@ -2,7 +2,6 @@ class UsersController < ApplicationController
   before_action :prevent_authenticated_user!, only: [:create]
   before_action :require_authenticated_user!, only: [:show]
 
-  # TODO: Return different data if authenticated vs not
   def show
     @user = User.find(params[:id])
     render status: :ok, json: @user

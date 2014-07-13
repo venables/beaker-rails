@@ -3,8 +3,8 @@ class SessionsController < ApplicationController
 
   def create
     if user = User.authenticate(params[:email], params[:password])
-      token = sign_in(user, !!params[:remember_me])
-      render status: :created, json: { session_token: token }
+      @session = sign_in(user)
+      render status: :created, json: @session, serializer: SessionSerializer
     else
       render status: :bad_request, json: { password: :invalid }
     end

@@ -1,15 +1,15 @@
 'use strict';
 
 angular.module('beakerApp.services')
-  .factory('session', ['$http', 'users',
-    function($http, users) {
+  .factory('session', ['$http',
+    function($http) {
       var token;
 
       var create = function(data) {
         return $http
           .post("/api/v1/session", data)
           .success(function(data) {
-            token = data.session_token;
+            token = data.session.token;
             $http.defaults.headers.common.Authorization = 'Token token="' + token + '"';
           });
       };
@@ -21,7 +21,7 @@ angular.module('beakerApp.services')
 
       return {
         create: create,
-        token: token
+        destroy: destroy
       };
     }
   ]);

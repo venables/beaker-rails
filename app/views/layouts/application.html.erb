@@ -4,7 +4,7 @@
     <title><%= t('.title') %></title>
     <%= stylesheet_link_tag 'application', media: 'all' %>
   </head>
-  <body ng-cloak>
+  <body ng-cloak ng-controller="ApplicationCtrl">
 
     <div ng-view>
       <%= render 'layouts/flash_messages' %>

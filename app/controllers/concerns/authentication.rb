@@ -1,9 +1,6 @@
 module Authentication
   extend ActiveSupport::Concern
 
-  AUTH_KEY = 'user_token'
-  SESSION_SECRET = Rails.application.secrets.secret_key_base
-
   class NotAuthenticatedError < StandardError; end
 
   included do
@@ -96,19 +93,19 @@ module Authentication
   #   # => #<User:..>
   #
   # Returns the signed-in user.
-  def sign_in(user, remember_me=false)
+  def sign_in(user)
     sign_out
     user.update_attributes(last_login_at: Time.now.utc)
     @current_user = user
 
-    JWT.encode({ AUTH_KEY => user.authentication_token }, SESSION_SECRET, 'HS512')
+    Session.build_for_user(user)
   end
 
   def user_authentication_token_from_header
     user_auth_token = nil
 
     authenticate_with_http_token do |token, options|
-      user_auth_token = JWT.decode(token, SESSION_SECRET)[0][AUTH_KEY] rescue nil
+      user_auth_token = Session.decode_token(token)
     end
 
     user_auth_token
