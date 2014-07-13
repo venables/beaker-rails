@@ -1,5 +1,5 @@
 class SessionsController < ApplicationController
-  before_filter :prevent_authenticated_user!, only: [:create]
+  before_action :prevent_authenticated_user!, only: [:create]
 
   def create
     if user = User.authenticate(params[:email], params[:password])

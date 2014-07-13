@@ -48,7 +48,7 @@ module Authentication
   private
 
   # Internal: Require a user to be authenticated for a given action. Used as a
-  # before_filter in a controller.
+  # before_action in a controller.
   #
   # Examples
   #

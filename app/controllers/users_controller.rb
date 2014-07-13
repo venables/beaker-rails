@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
-  before_filter :prevent_authenticated_user!, only: [:new, :create]
+  before_action :prevent_authenticated_user!, only: [:create]
+  before_action :require_authenticated_user!, only: [:show]
 
   # TODO: Return different data if authenticated vs not
   def show
