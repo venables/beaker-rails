@@ -6,14 +6,11 @@ gem 'rails', '4.1.4'
 gem 'pg'
 
 gem 'active_model_serializers', '~> 0.8.1'
-gem 'angularjs-rails', '~> 1.2.19'
 gem 'bcrypt', '~> 3.1.7'
 gem 'coffee-rails', '~> 4.0.0'
 gem 'jwt', '~> 1.0.0'
 gem 'sass-rails', '~> 4.0.3'
 gem 'uglifier', '>= 1.3.0'
-gem 'underscore-rails', '~> 1.6.0'
-gem 'underscore-string-rails', '~> 0.0.2'
 gem 'unicorn', '~> 4.8.3'
 
 group :production do

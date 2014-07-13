@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('beakerApp', [
-  'ngCookies',
-  'ngRoute',
   'beakerApp.controllers',
-  'beakerApp.services'
+  'beakerApp.services',
+  'ipCookie',
+  'ngRoute'
 ]);
 
 angular.module('beakerApp.controllers', []);

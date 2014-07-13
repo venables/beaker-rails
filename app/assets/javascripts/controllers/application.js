@@ -10,7 +10,6 @@ angular.module('beakerApp.controllers')
       };
 
       $scope.$on('signin', function(event, sessionData) {
-        console.log(sessionData);
         users
           .show(sessionData.user_id)
           .success(function(data) {

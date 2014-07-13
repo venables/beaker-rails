@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('beakerApp.services')
-  .factory('session', ['$http', '$rootScope', 'cookies',
-    function($http, $rootScope, cookies) {
+  .factory('session', ['$http', '$rootScope', 'cookie',
+    function($http, $rootScope, cookie) {
       var token;
       var cookieName = '_beaker_session'
 
@@ -12,26 +12,28 @@ angular.module('beakerApp.services')
         $rootScope.$broadcast('signin', sessionData);
       }
 
-      var create = function(data) {
+      var create = function(data, remember) {
         return $http
           .post("/api/v1/session", data)
           .success(function(data) {
+            var cookieOpts = remember ? { expires: 30 } : {};
+
             setSession(data.session);
-            cookies.set(cookieName, data.session);
+
+            cookie.set(cookieName, data.session, cookieOpts);
           });
       };
 
       var destroy = function() {
         token = null;
         $http.defaults.headers.common.Authorization = null;
-        cookies.clear(cookieName);
+        cookie.unset(cookieName);
       };
 
       var loadFromCookie = function() {
-        var sessionData = cookies.get(cookieName);
+        var sessionData = cookie.get(cookieName);
 
         if (sessionData) {
-          console.log(sessionData);
           setSession(sessionData);
         }
       };

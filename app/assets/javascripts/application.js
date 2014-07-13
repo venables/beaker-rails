@@ -10,10 +10,10 @@
 // WARNING: THE FIRST BLANK LINE MARKS THE END OF WHAT'S TO BE PROCESSED, ANY BLANK LINE SHOULD
 // GO AFTER THE REQUIRES BELOW.
 //
-//= require angular
-//= require angular-cookies
-//= require angular-route
-//= require underscore
-//= require underscore.string
+//= require angular/angular
+//= require angular-cookie/angular-cookie
+//= require angular-route/angular-route
+//= require underscore/underscore
+//= require underscore.string/lib/underscore.string
 //= require app
 //= require_tree .
