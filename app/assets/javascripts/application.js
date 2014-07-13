@@ -11,6 +11,7 @@
 // GO AFTER THE REQUIRES BELOW.
 //
 //= require angular
+//= require angular-cookies
 //= require angular-route
 //= require underscore
 //= require underscore.string

@@ -1,6 +1,7 @@
 'use strict';
 
 angular.module('beakerApp', [
+  'ngCookies',
   'ngRoute',
   'beakerApp.controllers',
   'beakerApp.services'

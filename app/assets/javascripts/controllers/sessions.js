@@ -1,21 +1,15 @@
 'use strict';
 
 angular.module('beakerApp.controllers')
-  .controller('NewSessionCtrl', ['$location', '$scope', 'session', 'users',
-    function($location, $scope, session, users) {
+  .controller('NewSessionCtrl', ['$location', '$scope', 'session',
+    function($location, $scope, session) {
       $scope.formData = {};
 
       $scope.submit = function() {
         session
-          .create($scope.formData)
+          .create($scope.formData, $scope.remember)
           .success(function(data) {
             $location.path('/');
-
-            users
-              .show(data.session.user_id)
-              .success(function(data) {
-                $scope.setCurrentUser(data.user);
-              });
           });
       };
     }
