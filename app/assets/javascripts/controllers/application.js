@@ -5,18 +5,19 @@ angular.module('beakerApp.controllers')
     function($scope, session, users) {
       $scope.currentUser = null;
 
-      $scope.setCurrentUser = function(user) {
+      $scope.$on('currentUser', function(event, user) {
         $scope.currentUser = user;
-      };
+      });
 
       $scope.$on('signin', function(event, sessionData) {
         users
           .show(sessionData.user_id)
           .success(function(data) {
-            $scope.setCurrentUser(data.user);
+            session.setCurrentUser(data.user);
           });
       });
 
+      // Load the customer from a cookie upon page load, if possible
       session.loadFromCookie();
     }
   ]);

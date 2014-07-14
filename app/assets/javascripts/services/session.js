@@ -4,6 +4,7 @@ angular.module('beakerApp.services')
   .factory('session', ['$http', '$rootScope', 'cookie',
     function($http, $rootScope, cookie) {
       var token;
+      var user;
       var cookieName = '_beaker_session'
 
       var setSession = function(sessionData) {
@@ -38,10 +39,16 @@ angular.module('beakerApp.services')
         }
       };
 
+      var setCurrentUser = function(newUser) {
+        user = newUser;
+        $rootScope.$broadcast('currentUser', user);
+      };
+
       return {
         create: create,
         destroy: destroy,
-        loadFromCookie: loadFromCookie
+        loadFromCookie: loadFromCookie,
+        setCurrentUser: setCurrentUser
       };
     }
   ]);
