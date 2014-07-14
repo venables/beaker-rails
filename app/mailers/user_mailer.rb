@@ -3,7 +3,7 @@ class UserMailer < ActionMailer::Base
 
   def reset_password_email(user)
     @user = user
-    @url = edit_password_reset_url(@user.password_reset_token)
+    @url = root_url + 'reset-password/' + @user.password_reset_token
     mail to: user.email
   end
 end

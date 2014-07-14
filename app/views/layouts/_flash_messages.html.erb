@@ -1,7 +1,0 @@
-<% flash.each do |name, message| %>
-  <% if message.is_a?(String) %>
-    <div class="alert alert-<%= name %>" id="flash-<%= name %>">
-      <%= message %>
-    </div>
-  <% end %>
-<% end %>

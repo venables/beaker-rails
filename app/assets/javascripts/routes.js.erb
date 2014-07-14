@@ -10,6 +10,24 @@ angular.module('beakerApp')
           templateUrl: '<%= path_to_asset("static_pages/homepage.html") %>',
           controller: 'HomepageCtrl'
         })
+        .when('/forgot-password', {
+          templateUrl: '<%= path_to_asset("password_resets/new.html") %>',
+          controller: 'NewPasswordResetCtrl'
+        })
+        .when('/reset-password/:token', {
+          templateUrl: '<%= path_to_asset("password_resets/edit.html") %>',
+          controller: 'EditPasswordResetCtrl',
+          resolve: {
+            resetToken: ['$location', '$route', 'passwordResets',
+              function($location, $route, passwordResets) {
+                return passwordResets
+                  .show($route.current.params.token)
+                  .error(function() {
+                    $location.replace().path('/');
+                  });
+              }]
+          }
+        })
         .when('/signin', {
           templateUrl: '<%= path_to_asset("sessions/new.html") %>',
           controller: 'NewSessionCtrl'

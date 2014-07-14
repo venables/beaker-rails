@@ -4,7 +4,7 @@ Beaker::Application.routes.draw do
 
   scope :api do
     scope :v1 do
-      resources :password_resets, only: [:create, :update]
+      resources :password_resets, only: [:show, :create, :update]
       resource :session, only: [:create, :destroy]
       resources :users, only: [:show, :create]
     end
