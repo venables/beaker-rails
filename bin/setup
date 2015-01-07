@@ -18,6 +18,7 @@ rake db:setup
 if [ ! -f .env ]; then
   echo "RACK_ENV=development" > .env
   echo "SECRET_TOKEN=$(rake secret)" >> .env
+  echo "REDIS_URI=http://localhost:6379" >> .env
 fi
 
 echo "port: $FOREMAN_PORT" > .foreman

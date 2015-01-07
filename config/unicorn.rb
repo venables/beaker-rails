@@ -23,10 +23,10 @@ before_fork do |server, worker|
     Rails.logger.info('Disconnected from ActiveRecord')
   end
 
-  #if defined?(Resque)
-    #Resque.redis.quit
-    #Rails.logger.info('Disconnected from Redis')
-  #end
+  if defined?(Resque)
+    Resque.redis.quit
+    Rails.logger.info('Disconnected from Redis')
+  end
 end
 
 after_fork do |server, worker|
@@ -40,8 +40,8 @@ after_fork do |server, worker|
     Rails.logger.info('Connected to ActiveRecord')
   end
 
-  #if defined?(Resque)
-    #Resque.redis = ENV['REDIS_URI']
-    #Rails.logger.info('Connected to Redis')
-  #end
+  if defined?(Resque)
+    Resque.redis = ENV['REDIS_URI']
+    Rails.logger.info('Connected to Redis')
+  end
 end
