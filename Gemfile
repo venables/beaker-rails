@@ -13,6 +13,7 @@ gem 'redis', '3.2.0'
 gem 'redis-namespace', '1.5.1'
 gem 'resque', '1.25.2'
 gem 'resque-scheduler', '4.0.0'
+gem 'uglifier'
 
 group :production do
   # Heroku log & static asset configuration
