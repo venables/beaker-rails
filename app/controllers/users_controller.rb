@@ -9,6 +9,7 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     if @user.save
       sign_in(@user)
+      UserMailer.founder_email(@user).deliver_later(wait: 10.seconds)
       redirect_to root_url, notice: I18n.t('users.create.success')
     else
       render 'new'

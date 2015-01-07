@@ -8,7 +8,7 @@ Beaker::Application.routes.draw do
   resources :users, only: [:new, :create]
 
   resources :sessions, only: [:new, :create, :destroy]
-  delete 'sign-out' => 'sessions#destroy', as: 'sign_out'
+  get 'sign-out' => 'sessions#destroy', as: 'sign_out'
 
   resources :password_resets
 

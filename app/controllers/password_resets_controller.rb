@@ -7,7 +7,7 @@ class PasswordResetsController < ApplicationController
 
   def create
     user = User.where(email: params[:email].try(:downcase)).first
-    UserMailer.reset_password_email(user).deliver if user
+    UserMailer.reset_password_email(user).deliver_later if user
     redirect_to root_url, notice: I18n.t('password_resets.create.success')
   end
 

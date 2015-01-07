@@ -17,8 +17,9 @@ rake db:setup
 # Set up configurable environment variables for Foreman
 if [ ! -f .env ]; then
   echo "RACK_ENV=development" > .env
-  echo "SECRET_TOKEN=$(rake secret)" >> .env
+  echo "REDIS_NAMESPACE=beaker" >> .env
   echo "REDIS_URI=http://localhost:6379" >> .env
+  echo "SECRET_TOKEN=$(rake secret)" >> .env
 fi
 
 echo "port: $FOREMAN_PORT" > .foreman

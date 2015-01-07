@@ -26,11 +26,14 @@ en:
         email: "Email address"
         password: "Password"
         password_confirmation: "Password, again"
+
   authentication:
     required: "You must be signed in to do that"
+
   layouts:
     application:
       title: "Beaker"
+
   pages:
     home:
       title: "Welcome"
@@ -38,6 +41,7 @@ en:
       sign_in: "Sign in"
       signed_in_as: "Signed in as %{email}"
       sign_out: "Sign out"
+
   password_resets:
     create:
       success: "Instructions to reset your password have been emailed to you."
@@ -52,6 +56,7 @@ en:
     update:
       success: "Your password has been updated"
       failure: "The link you clicked has expired or has already been used."
+
   sessions:
     create:
       success: "Welcome back!"
@@ -64,10 +69,18 @@ en:
       remember_me: "Remember me"
       sign_in: "Sign in"
       forgot: "Forgot?"
+
   user_mailer:
+    founder_email:
+      subject: "Thanks for joining Beaker"
+      greeting: "Hey %{name},"
+      body: "My name's Matt - I'm the founder of Beaker. I just wanted to shoot you an email thanking you for signing up."
+      body2: "Please feel free to email me (this is my real email address) with any comments or feedback (good or bad!) that you have with our service.  We want to make sure you have a great experience here."
+      closing: "Talk to you soon,"
+      signature: "- Matt"
     reset_password_email:
       subject: "Reset your password"
-      greeting: "Hey, %{name}"
+      greeting: "Hi %{name},"
       intro: "We heard you forgot your password.  To reset it, just visit the following URL"
       closing: "Didn't forget your password? Don't worry, just ignore this email."
       love: "Love,"
