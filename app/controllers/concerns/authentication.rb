@@ -25,8 +25,15 @@ module Authentication
   # Returns nil if no user is authenticated.
   def current_user
     return @current_user if @current_user
-    token = session[AUTH_KEY] || cookies.signed[AUTH_KEY]
-    @current_user = User.where(authentication_token: token).first if token
+    jwt_string = session[AUTH_KEY] || cookies.signed[AUTH_KEY]
+
+    if jwt_string
+      token = JWT.decode(jwt_string, signing_key, 'HS512')[0]['auth_token']
+      @current_user = User.where(authentication_token: token).first if token
+    end
+
+  rescue
+    @current_user = nil
   end
 
   # Public: Is there an authenticated user?
@@ -45,6 +52,10 @@ module Authentication
   end
 
   private
+
+  def signing_key
+    Rails.application.secrets.secret_key_base
+  end
 
   # Internal: Require a user to be authenticated for a given action. Used as a
   # before_filter in a controller.
@@ -125,8 +136,11 @@ module Authentication
   #
   # Returns nothing.
   def set_user_session(user, remember_me=false)
-    cookies.permanent.signed[AUTH_KEY] = user.authentication_token if remember_me
-    session[AUTH_KEY] = user.authentication_token
+    # TODO: Gerneate token, save it in redis
+    token = JWT.encode({ auth_token: user.authentication_token }, signing_key, "HS512")
+
+    cookies.permanent.signed[AUTH_KEY] = token if remember_me
+    session[AUTH_KEY] = token
   end
 
   # Internal: Handle a '403 Unauthorized' exception. This method is called when

@@ -7,6 +7,7 @@ gem 'pg'
 
 gem 'bcrypt', '3.1.9'
 gem 'jbuilder', '2.2.6'
+gem 'jwt', '1.2.0'
 gem 'puma', '2.10.2'
 gem 'rack-timeout', '0.1.1'
 gem 'redis', '3.2.0'
