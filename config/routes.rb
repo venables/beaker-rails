@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   # root 'welcome#index'
   root to: 'pages#home'
 
-  resources :users, only: [:new, :create]
+  resources :users, only: [:index, :show, :new, :create]
 
   resources :sessions, only: [:new, :create, :destroy]
   get 'sign-out' => 'sessions#destroy', as: 'sign_out'

@@ -37,10 +37,12 @@ en:
   pages:
     home:
       title: "Welcome"
+      my_profile: "My Profile"
       sign_up: "Sign up"
       sign_in: "Sign in"
       signed_in_as: "Signed in as %{email}"
       sign_out: "Sign out"
+      users: "Users"
 
   password_resets:
     create:
