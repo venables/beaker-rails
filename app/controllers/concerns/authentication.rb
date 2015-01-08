@@ -136,6 +136,7 @@ module Authentication
   #
   # Returns nothing.
   def set_user_session(user, remember_me=false)
+    # TODO: Move this all to a service
     # TODO: Gerneate token, save it in redis
     token = JWT.encode({ auth_token: user.authentication_token }, signing_key, "HS512")
 

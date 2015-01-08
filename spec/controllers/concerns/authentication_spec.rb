@@ -88,7 +88,7 @@ describe Authentication, type: :controller do
 
     context 'without an auth session' do
       context 'with a valid signed auth cookie' do
-        let(:signed_cookies) { { user_token: user.authentication_token } }
+        let(:signed_cookies) { { user_token: encode_auth_token(user) } }
 
         it 'returns the user' do
           expect(controller.current_user).to eq(user)
@@ -111,7 +111,7 @@ describe Authentication, type: :controller do
     end
 
     context 'with a valid auth session' do
-      let(:mock_session) { { user_token: user.authentication_token } }
+      let(:mock_session) { { user_token: encode_auth_token(user) } }
 
       it 'returns the user' do
         expect(controller.current_user).to eq(user)
@@ -179,8 +179,8 @@ describe Authentication, type: :controller do
       it 'sets the session[auth_key] variable to the user id' do
         controller.send(:set_user_session, user, true)
 
-        expect(mock_session[auth_key]).to eq(user.authentication_token)
-        expect(signed_cookies[auth_key]).to eq(user.authentication_token)
+        expect(decode_auth_token(mock_session[auth_key])).to eq(user.authentication_token)
+        expect(decode_auth_token(signed_cookies[auth_key])).to eq(user.authentication_token)
       end
     end
 
@@ -188,7 +188,8 @@ describe Authentication, type: :controller do
       it 'sets the session[auth_key] variable to the user id' do
         controller.send(:set_user_session, user)
 
-        expect(mock_session[auth_key]).to eq(user.authentication_token)
+        expect(signed_cookies[auth_key]).to be_nil
+        expect(decode_auth_token(mock_session[auth_key])).to eq(user.authentication_token)
       end
     end
   end
@@ -209,5 +210,21 @@ describe Authentication, type: :controller do
 
       expect(controller).to have_received(:redirect_to).with(login_path, { alert: error_message })
     end
+  end
+
+  private
+
+  # TODO: Move this all to a service
+
+  def encode_auth_token(user)
+    JWT.encode({ auth_token: user.authentication_token }, signing_key, "HS512")
+  end
+
+  def decode_auth_token(jwt_string)
+    JWT.decode(jwt_string, signing_key, 'HS512')[0]['auth_token']
+  end
+
+  def signing_key
+    Rails.application.secrets.secret_key_base
   end
 end

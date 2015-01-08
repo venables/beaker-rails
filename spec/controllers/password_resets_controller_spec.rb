@@ -25,11 +25,13 @@ describe PasswordResetsController, type: :controller do
       let(:user) { FactoryGirl.create(:user) }
 
       it 'sends the password reset instructions to a user' do
-        allow(UserMailer).to receive_messages(reset_password_email: email)
+        email = double('email', deliver_later: true)
+        allow(UserMailer).to receive(:reset_password_email).and_return(email)
 
         post :create, { email: user.email }
 
         expect(UserMailer).to have_received(:reset_password_email)
+        expect(email).to have_received(:deliver_later)
         expect(response).to redirect_to(root_url)
         expect(flash[:notice]).to eq(I18n.t('password_resets.create.success'))
       end
