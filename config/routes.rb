@@ -6,7 +6,12 @@ Rails.application.routes.draw do
   # root 'welcome#index'
   root to: 'pages#home'
 
-  resources :users, only: [:index, :show, :new, :create]
+  namespace :api, defaults: { format: 'json' }, constraints: { format: 'json' } do
+    namespace :v1 do
+      resources :users, only: [:index, :show, :create]
+    end
+  end
+
 
   resources :sessions, only: [:new, :create, :destroy]
   get 'sign-out' => 'sessions#destroy', as: 'sign_out'
