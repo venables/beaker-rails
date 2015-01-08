@@ -59,3 +59,11 @@ Run the server
 ```bash
 foreman start
 ```
+
+
+## Testing
+
+```sh
+rake db:test:prepare
+rake
+```
