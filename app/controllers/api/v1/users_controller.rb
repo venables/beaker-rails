@@ -13,7 +13,7 @@ class Api::V1::UsersController < Api::V1::ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
-      @token = sign_in(@user)
+      @session = sign_in(@user)
       UserMailer.founder_email(@user).deliver_later(wait: 10.seconds)
     else
       render 'error', status: :bad_request

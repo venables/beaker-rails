@@ -1,5 +1,5 @@
 json.session do
-  json.token @token
+  json.token @session.public_token
 end
 
 json.user do

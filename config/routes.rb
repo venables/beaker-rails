@@ -4,7 +4,6 @@ Rails.application.routes.draw do
 
   # You can have the root of your site routed with "root"
   # root 'welcome#index'
-  root to: 'pages#home'
 
   namespace :api, defaults: { format: 'json' }, constraints: { format: 'json' } do
     namespace :v1 do

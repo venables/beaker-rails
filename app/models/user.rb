@@ -6,10 +6,6 @@ class User < ActiveRecord::Base
   validates :email, presence: true, uniqueness: true, format: /.+\@.+\..+/
   validates :password, presence: true, length: { minimum: 6 }, on: :create
 
-  before_create do
-    generate_unique_token(:authentication_token)
-  end
-
   before_save do
     generate_unique_token(:password_reset_token)
   end

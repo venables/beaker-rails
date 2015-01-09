@@ -3,7 +3,7 @@ class Api::V1::SessionsController < Api::V1::ApplicationController
 
   def create
     if @user = User.authenticate(params[:email], params[:password])
-      @token = sign_in(@user)
+      @session = sign_in(@user)
     else
       render 'error', status: :bad_request
     end

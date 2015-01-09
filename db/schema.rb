@@ -20,14 +20,12 @@ ActiveRecord::Schema.define(version: 20130305163611) do
   create_table "users", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
     t.string   "email"
     t.string   "password_digest"
-    t.string   "authentication_token"
     t.string   "password_reset_token"
     t.datetime "last_login_at"
     t.datetime "created_at",           null: false
     t.datetime "updated_at",           null: false
   end
 
-  add_index "users", ["authentication_token"], name: "index_users_on_authentication_token", unique: true, using: :btree
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["password_reset_token"], name: "index_users_on_password_reset_token", unique: true, using: :btree
 

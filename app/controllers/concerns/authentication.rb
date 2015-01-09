@@ -24,23 +24,9 @@ module Authentication
   # Returns the User that is currently authenticated, if any.
   # Returns nil if no user is authenticated.
   def current_user
-    return @current_user if @current_user
-    token = user_authentication_token_from_header
-    @current_user = User.where(authentication_token: token).first if token
+    return current_session && current_session.user
   end
 
-  def user_authentication_token_from_header
-    user_auth_token = nil
-
-    authenticate_with_http_token do |token, options|
-      # TODO: Make this Session.decode_token or similar
-      user_auth_token = JWT.decode(token, signing_key, 'HS512')[0]['auth_token']
-    end
-
-    user_auth_token
-  rescue
-    nil
-  end
 
   # Public: Is there an authenticated user?
   #
@@ -59,8 +45,12 @@ module Authentication
 
   private
 
-  def signing_key
-    Rails.application.secrets.secret_key_base
+  def current_session
+    return @current_session if @current_session
+
+    authenticate_with_http_token do |token, options|
+      @current_session = Session.from_public_token(token)
+    end
   end
 
   # Internal: Require a user to be authenticated for a given action. Used as a
@@ -115,11 +105,7 @@ module Authentication
   def sign_in(user)
     sign_out
     user.update_attributes(last_login_at: Time.now.utc)
-    @current_user = user
-
-    # TODO: Save token to redis
-    token = JWT.encode({ auth_token: user.authentication_token }, signing_key, "HS512")
-    token
+    @current_session = Session.generate_for_user!(user)
   end
 
   # Internal: Sign out the currently signed-in user by resetting the session
@@ -133,8 +119,8 @@ module Authentication
   #
   # Returns nil.
   def sign_out
-    # TODO: Delete token from redis
-    @current_user = nil
+    current_session.destroy if current_session
+    @current_session = nil
   end
 
   # Internal: Handle a '401 Unauthorized' exception. This method is called when

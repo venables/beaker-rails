@@ -7,9 +7,6 @@ module AttributeTokenizer
   #
   # Examples
   #
-  #   user.generate_unique_token(:authentication_token)
-  #   # => "f83f4221d3ac477398bc804bdb7149fc"
-  #
   #   user.generate_unique_token(:password_reset_token)
   #   # => "cc56d0ce7a2f459ab963926592eb67f6"
   #
@@ -25,9 +22,6 @@ module AttributeTokenizer
   # attr - The attribute that should be set to a random token
   #
   # Examples
-  #
-  #   user.generate_random_token(:authentication_token)
-  #   # => "AjG3-SDWPm9x59yyuRiaTjRfxRWD-gZswXQTTVfDOyM"
   #
   #   user.generate_random_token(:password_reset_token)
   #   # => "m_wz_K0femF4PxXVsLf3hJT0FqvfEey2aBP_u7yeVEM"
