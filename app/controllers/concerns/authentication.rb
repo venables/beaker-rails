@@ -106,9 +106,11 @@ module Authentication
   # Returns the signed-in user.
   def sign_in(user, remember_me=false)
     sign_out
-    set_user_session(user, remember_me)
+    token = set_user_session(user, remember_me)
     user.update_attributes(last_login_at: Time.now.utc)
     @current_user = user
+
+    token
   end
 
   # Internal: Sign out the currently signed-in user by resetting the session
@@ -142,6 +144,8 @@ module Authentication
 
     cookies.permanent.signed[AUTH_KEY] = token if remember_me
     session[AUTH_KEY] = token
+
+    token
   end
 
   # Internal: Handle a '403 Unauthorized' exception. This method is called when
