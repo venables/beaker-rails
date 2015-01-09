@@ -119,6 +119,17 @@
       };
 
       var api = {
+        headers: function() {
+          var result = {};
+
+          if (Session.token) {
+            result['Authorization'] =  'Token token=' + Session.token;
+          }
+
+          return result
+        },
+
+
         perform: function(method, url, data, callback) {
           // TODO: ADD HEADERS HERE
           $.ajax({
@@ -126,6 +137,7 @@
             url: url,
             data: data,
             dataType: 'text',
+            headers: api.headers(),
             success: function(data) {
               var json = null;
 

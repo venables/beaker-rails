@@ -3,10 +3,10 @@ module Authentication
 
   AUTH_KEY = :user_token
 
-  class NotAuthenticated < StandardError; end
+  class NotAuthenticatedError < StandardError; end
 
   included do
-    rescue_from NotAuthenticated, with: :handle_403
+    rescue_from NotAuthenticatedError, with: :render_unauthorized
     helper_method :current_user
     helper_method :signed_in?
   end
@@ -25,15 +25,21 @@ module Authentication
   # Returns nil if no user is authenticated.
   def current_user
     return @current_user if @current_user
-    jwt_string = session[AUTH_KEY] || cookies.signed[AUTH_KEY]
+    token = user_authentication_token_from_header
+    @current_user = User.where(authentication_token: token).first if token
+  end
 
-    if jwt_string
-      token = JWT.decode(jwt_string, signing_key, 'HS512')[0]['auth_token']
-      @current_user = User.where(authentication_token: token).first if token
+  def user_authentication_token_from_header
+    user_auth_token = nil
+
+    authenticate_with_http_token do |token, options|
+      # TODO: Make this Session.decode_token or similar
+      user_auth_token = JWT.decode(token, signing_key, 'HS512')[0]['auth_token']
     end
 
+    user_auth_token
   rescue
-    @current_user = nil
+    nil
   end
 
   # Public: Is there an authenticated user?
@@ -73,7 +79,7 @@ module Authentication
   #   authenticated user.
   def require_authenticated_user!
     unless signed_in?
-      raise NotAuthenticated.new(I18n.t('authentication.required'))
+      raise NotAuthenticatedError
     end
   end
 
@@ -90,7 +96,9 @@ module Authentication
   # Returns nil if there's not an authenticated user.
   # Redirects to the root_path if a user is authenticated.
   def prevent_authenticated_user!
-    redirect_to(root_path) if signed_in?
+    if signed_in?
+      head :forbidden
+    end
   end
 
   # Internal: Sign in a given user by setting the session and current_user
@@ -106,11 +114,11 @@ module Authentication
   # Returns the signed-in user.
   def sign_in(user)
     sign_out
-    token = JWT.encode({ auth_token: user.authentication_token }, signing_key, "HS512")
     user.update_attributes(last_login_at: Time.now.utc)
     @current_user = user
 
     # TODO: Save token to redis
+    token = JWT.encode({ auth_token: user.authentication_token }, signing_key, "HS512")
     token
   end
 
@@ -129,16 +137,12 @@ module Authentication
     @current_user = nil
   end
 
-  # Internal: Handle a '403 Unauthorized' exception. This method is called when
-  # an Authentication::NotAuthenticated exception is raised.
+  # Internal: Handle a '401 Unauthorized' exception. This method is called when
+  # an Authentication::NotAuthenticatedError exception is raised.
   #
-  # Examples
-  #
-  #   handle_403(exception)
-  #   # <redirect>
-  #
-  # Redirects to the new session path.
-  def handle_403(e)
-    redirect_to new_session_path, alert: e.message
+  # Responds with a JSON error
+  def render_unauthorized
+    self.headers['WWW-Authenticate'] = 'Token realm="Application"'
+    head :unauthorized
   end
 end
