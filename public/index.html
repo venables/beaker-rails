@@ -9,12 +9,12 @@
   <div class="container">
     <h1>Beaker!</h1>
 
+    <!-- Not authenticated -->
     <div id="not-authenticated">
 
-      <!-- Login, Register -->
       <div class="row">
         <!-- Register -->
-        <div class="six columns">
+        <div class="four columns">
           <form id="register">
             <h3>Register</h3>
               <label for="register-email">Email</label>
@@ -32,26 +32,57 @@
         </div>
 
         <!-- Login -->
-        <div class="six columns">
-          <form id="login">
+        <div class="four columns">
+          <form id="signin">
             <h3>Login</h3>
-            <label for="login-email">Email</label>
-            <input type="text" name="email" id="login-email">
+            <label for="signin-email">Email</label>
+            <input type="text" name="email" id="signin-email">
 
-            <label for="login-password">Password</label>
-            <input type="password" name="password" id="login-password">
+            <label for="signin-password">Password</label>
+            <input type="password" name="password" id="signin-password">
 
             <br>
             <button type="submit">Submit</button>
           </form>
         </div>
+
+        <!-- Reset Password -->
+        <div class="four columns">
+          <form id="forgot-password">
+            <h3>Forgot Password?</h3>
+            <label for="forgot-password-email">Email</label>
+            <input type="text" name="email" id="forgot-password-email">
+            <button type="submit">Submit</button>
+          </form>
+
+          <form id="reset-password" style="display: none">
+            <h3>Forgot Password?</h3>
+            <label for="reset-password-token">Reset Token</label>
+            <input type="text" name="token" id="reset-password-token">
+
+            <label for="reset-password-password">New Password</label>
+            <input type="password" name="password" id="reset-password-password">
+
+            <label for="reset-password-password-confirmation">Password confirmation</label>
+            <input type="password" name="password_confirmation" id="reset-password-password-confirmation">
+
+            <button type="submit">Submit</button>
+          </form>
+        </div>
+
       </div>
     </div>
 
     <!-- Authenticated! -->
     <div id="authenticated" style="display: none;">
       <div class="row">
-        <h3>Auth'd!</h3>
+        <h3>Welcome!</h3>
+
+        <form id="signout">
+          <button type="submit">Sign out</button>
+        </form>
+
+
       </div>
 
     </div>
@@ -88,42 +119,112 @@
       };
 
       var api = {
-        post: function(url, data, callback) {
+        perform: function(method, url, data, callback) {
+          // TODO: ADD HEADERS HERE
           $.ajax({
-            type: 'POST',
+            type: method,
             url: url,
             data: data,
-            dataType: 'json',
+            dataType: 'text',
             success: function(data) {
-              api.handleSuccess(data);
-              callback(null, data);
+              var json = null;
+
+              try {
+                json = JSON.parse(data);
+              } catch(e) {}
+
+              api.handleSuccess(json);
+
+              if (callback) { callback(null, json); }
             },
             error: function(xhr) {
-              var errors = xhr.responseJSON.errors || [];
+              var json = null;
+
+              try {
+                json = JSON.parse(xhr.responseText);
+              } catch(e) {}
+
+              var errors = json && json.errors && json.errors.messages || [];
               api.handleError(errors);
-              callback(errors);
+              if (callback) { callback(errors); }
             }
           });
         },
 
+        post: function(url, data, callback) {
+          api.perform('POST', url, data, callback);
+        },
+
+        put: function(url, data, callback) {
+          api.perform('PUT', url, data, callback);
+        },
+
+        del: function(url, callback) {
+          api.perform('DELETE', url, {}, callback);
+        },
+
         handleSuccess: function(data) {
+          if (!data) { return; }
+
           if (data.session && data.session.token) {
             Session.signIn(data.session.token);
           }
         },
 
         handleError: function(errors) {
-          alert(errors.join('. '));
+          if (errors.length > 0) {
+            alert(errors.join('. '));
+          }
         }
       };
 
       $(document).on('submit', 'form#register', function(e) {
         e.preventDefault();
 
-        api.post('/api/v1/users', { user: $(this).serializeObject() }, function(err, data) {
+        api.post('/api/v1/users', { user: $(this).serializeObject() });
+      });
+
+      $(document).on('submit', 'form#signin', function(e) {
+        e.preventDefault();
+
+        api.post('/api/v1/sessions', $(this).serializeObject());
+      });
+
+      $(document).on('submit', 'form#forgot-password', function(e) {
+        e.preventDefault();
+
+        api.post('/api/v1/password_resets', $(this).serializeObject(), function(err) {
+          if (!err) {
+            $('form#reset-password').show();
+          }
         });
       });
 
+      $(document).on('submit', 'form#reset-password', function(e) {
+        e.preventDefault();
+
+        var data = $(this).serializeObject();
+        var token = data['token'];
+        delete data['token'];
+
+        api.put('/api/v1/password_resets/' + token, data, function(err) {
+          if (!err) {
+            $('form#reset-password').hide();
+            $('form#signin input#signin-email').val($('form#forgot-password input#forgot-password-email').val());
+            $('form#signin input#signin-password').focus();
+          }
+        });
+      });
+
+      $(document).on('submit', 'form#signout', function(e) {
+        e.preventDefault();
+
+        api.del('/api/v1/sessions', function(err) {
+          if (!err) {
+            Session.signOut();
+          }
+        });
+      });
 
       $.fn.serializeObject = function() {
         var o = {};

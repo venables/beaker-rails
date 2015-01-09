@@ -1,5 +1,6 @@
 class Api::V1::UsersController < Api::V1::ApplicationController
-  before_filter :prevent_authenticated_user!, only: [:new, :create]
+  before_filter :prevent_authenticated_user!, only: [:create]
+  before_filter :require_authenticated_user!, except: [:create]
 
   def index
     @users = User.all

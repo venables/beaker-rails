@@ -9,14 +9,11 @@ Rails.application.routes.draw do
   namespace :api, defaults: { format: 'json' }, constraints: { format: 'json' } do
     namespace :v1 do
       resources :users, only: [:index, :show, :create]
+      resource :sessions, only: [:create, :destroy]
+      resources :password_resets, only: [:create, :update]
     end
   end
 
-
-  resources :sessions, only: [:new, :create, :destroy]
-  get 'sign-out' => 'sessions#destroy', as: 'sign_out'
-
-  resources :password_resets
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

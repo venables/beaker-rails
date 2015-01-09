@@ -104,12 +104,13 @@ module Authentication
   #   # => #<User:..>
   #
   # Returns the signed-in user.
-  def sign_in(user, remember_me=false)
+  def sign_in(user)
     sign_out
-    token = set_user_session(user, remember_me)
+    token = JWT.encode({ auth_token: user.authentication_token }, signing_key, "HS512")
     user.update_attributes(last_login_at: Time.now.utc)
     @current_user = user
 
+    # TODO: Save token to redis
     token
   end
 
@@ -124,28 +125,8 @@ module Authentication
   #
   # Returns nil.
   def sign_out
-    reset_session
-    cookies.delete(AUTH_KEY)
+    # TODO: Delete token from redis
     @current_user = nil
-  end
-
-  # Internal: Set the "signed-in" session and cookie variables for a given
-  # user, including the remember_me cookie.
-  #
-  # Examples
-  #
-  #   set_user_session(user)
-  #
-  # Returns nothing.
-  def set_user_session(user, remember_me=false)
-    # TODO: Move this all to a service
-    # TODO: Gerneate token, save it in redis
-    token = JWT.encode({ auth_token: user.authentication_token }, signing_key, "HS512")
-
-    cookies.permanent.signed[AUTH_KEY] = token if remember_me
-    session[AUTH_KEY] = token
-
-    token
   end
 
   # Internal: Handle a '403 Unauthorized' exception. This method is called when

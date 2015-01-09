@@ -1,24 +1,18 @@
-class PasswordResetsController < ApplicationController
-  before_filter :prevent_authenticated_user!, only: [:new, :create]
-  before_filter :find_user_from_token, only: [:edit, :update]
-
-  def new
-  end
+class Api::V1::PasswordResetsController < Api::V1::ApplicationController
+  before_filter :prevent_authenticated_user!, only: [:create]
+  before_filter :find_user_from_token, only: [:update]
 
   def create
     user = User.where(email: params[:email].try(:downcase)).first
     UserMailer.reset_password_email(user).deliver_later if user
-    redirect_to root_url, notice: I18n.t('password_resets.create.success')
-  end
-
-  def edit
+    head :created
   end
 
   def update
     if @user.update_attributes(password_reset_params)
-      redirect_to new_session_path, notice: I18n.t('password_resets.update.success')
+      head :no_content
     else
-      render 'edit'
+      render 'error', status: :bad_request
     end
   end
 
