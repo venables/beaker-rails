@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
   has_secure_password
 
   validates :email, presence: true, uniqueness: true, format: /.+\@.+\..+/
-  validates :password, presence: { on: :create }, length: { minimum: 6 }
+  validates :password, length: { minimum: 6 }
 
   before_save do
     generate_unique_token(:password_reset_token)
