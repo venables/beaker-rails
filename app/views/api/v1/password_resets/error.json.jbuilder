@@ -1,3 +1,3 @@
 json.errors do
-  json.messages ['Password is invalid']
+  json.messages @user.errors.to_a
 end

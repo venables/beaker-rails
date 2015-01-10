@@ -115,7 +115,13 @@ $(function() {
   $(document).on('submit', 'form#register', function(e) {
     e.preventDefault();
 
-    api.post('/api/v1/users', { user: $(this).serializeObject() });
+    var data = $(this).serializeObject();
+    if (data.password != data.password_confirmation) {
+      alert('Passwords must match');
+      return
+    }
+
+    api.post('/api/v1/users', { user: data });
   });
 
   $(document).on('submit', 'form#signin', function(e) {
@@ -138,10 +144,13 @@ $(function() {
     e.preventDefault();
 
     var data = $(this).serializeObject();
-    var token = data['token'];
-    delete data['token'];
 
-    api.put('/api/v1/password_resets/' + token, data, function(err) {
+    if (data.password != data.password_confirmation) {
+      alert('Passwords must match');
+      return
+    }
+
+    api.put('/api/v1/password_resets/' + data.token, data, function(err) {
       if (!err) {
         $('form#reset-password').hide();
         $('form#signin input#signin-email').val($('form#forgot-password input#forgot-password-email').val());

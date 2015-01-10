@@ -25,7 +25,6 @@ en:
       user: &user_attributes
         email: "Email address"
         password: "Password"
-        password_confirmation: "Password, again"
 
   authentication:
     required: "You must be signed in to do that"
