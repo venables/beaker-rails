@@ -1,0 +1,81 @@
+<div class="container">
+  <h1>Beaker!</h1>
+
+  <!-- Not authenticated -->
+  <div id="not-authenticated">
+
+    <div class="row">
+      <!-- Register -->
+      <div class="four columns">
+        <form id="register">
+          <h3>Register</h3>
+            <label for="register-email">Email</label>
+            <input type="text" name="email" id="register-email">
+
+            <label for="register-password">Password</label>
+            <input type="password" name="password" id="register-password">
+
+            <label for="register-password-confirmation">Password confirmation</label>
+            <input type="password" name="password_confirmation" id="register-password-confirmation">
+
+            <br>
+            <button type="submit">Submit</button>
+        </form>
+      </div>
+
+      <!-- Login -->
+      <div class="four columns">
+        <form id="signin">
+          <h3>Login</h3>
+          <label for="signin-email">Email</label>
+          <input type="text" name="email" id="signin-email">
+
+          <label for="signin-password">Password</label>
+          <input type="password" name="password" id="signin-password">
+
+          <br>
+          <button type="submit">Submit</button>
+        </form>
+      </div>
+
+      <!-- Reset Password -->
+      <div class="four columns">
+        <form id="forgot-password">
+          <h3>Forgot Password?</h3>
+          <label for="forgot-password-email">Email</label>
+          <input type="text" name="email" id="forgot-password-email">
+          <button type="submit">Submit</button>
+        </form>
+
+        <form id="reset-password" style="display: none">
+          <h3>Forgot Password?</h3>
+          <label for="reset-password-token">Reset Token</label>
+          <input type="text" name="token" id="reset-password-token">
+
+          <label for="reset-password-password">New Password</label>
+          <input type="password" name="password" id="reset-password-password">
+
+          <label for="reset-password-password-confirmation">Password confirmation</label>
+          <input type="password" name="password_confirmation" id="reset-password-password-confirmation">
+
+          <button type="submit">Submit</button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Authenticated! -->
+  <div id="authenticated" style="display: none;">
+    <div class="row">
+      <h3>Welcome!</h3>
+
+      <form id="signout">
+        <button type="submit">Sign out</button>
+      </form>
+
+
+    </div>
+
+  </div>
+</div> <!-- /container -->
