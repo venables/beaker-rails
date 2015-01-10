@@ -68,14 +68,34 @@
   <!-- Authenticated! -->
   <div id="authenticated" style="display: none;">
     <div class="row">
-      <h3>Welcome!</h3>
+      <div class="four columns">
+        <form id="signout">
+          <button type="submit">Sign out</button>
+        </form>
+      </div>
 
-      <form id="signout">
-        <button type="submit">Sign out</button>
-      </form>
+      <div class="four columns">
+        <form id="list-users">
+          <button type="submit">List users</button>
+        </form>
+
+        <ul id="list-users-results">
+
+        </ul>
+      </div>
+
+      <div class="four columns">
+        <form id="get-user">
+          <button type="submit">Load my info</button>
+        </form>
+
+        <div id="get-user-results">
+
+        </div>
+      </div>
 
 
     </div>
-
   </div>
+
 </div> <!-- /container -->
