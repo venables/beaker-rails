@@ -1,13 +1,7 @@
 require 'rails_helper'
 
-describe PasswordResetsController, type: :controller do
-  describe '#new' do
-    it 'renders the reset password page' do
-      get :new
-
-      expect(response).to render_template('new')
-    end
-  end
+describe Api::V1::PasswordResetsController, type: :controller do
+  let(:default_params) { { format: :json } }
 
   describe '#create' do
     let(:email) { double('email', deliver: {}) }
@@ -34,27 +28,6 @@ describe PasswordResetsController, type: :controller do
         expect(email).to have_received(:deliver_later)
         expect(response).to redirect_to(root_url)
         expect(flash[:notice]).to eq(I18n.t('password_resets.create.success'))
-      end
-    end
-  end
-
-  describe '#edit' do
-    context 'with an invalid token' do
-      it 'redirects to the sign-in page' do
-        get :edit, id: 'an invalid token'
-
-        expect(response).to redirect_to(new_session_path)
-        expect(flash[:alert]).to eq(I18n.t('password_resets.update.failure'))
-      end
-    end
-
-    context 'with a valid token' do
-      let(:user) { FactoryGirl.create(:user) }
-
-      it 'renders the reset password page' do
-        get :edit, id: user.password_reset_token
-
-        expect(response).to render_template('edit')
       end
     end
   end

@@ -1,23 +1,16 @@
 require 'rails_helper'
 
-describe UsersController, type: :controller do
-  describe '#new' do
-    it 'shows the signup form' do
-      get :new
-
-      expect(assigns[:user]).to be_new_record
-      expect(response).to render_template('new')
-    end
-  end
+describe Api::V1::UsersController, type: :controller do
+  let(:default_params) { { format: :json } }
 
   describe '#create' do
     context 'with invalid data' do
       let(:user_params) { FactoryGirl.attributes_for(:user).slice(:email) }
 
-      it 'renders the new form' do
+      it 'returns an error' do
         post :create, user: user_params
 
-        expect(response).to render_template('new')
+        expect(response).to render_template('error')
       end
     end
 
@@ -30,7 +23,7 @@ describe UsersController, type: :controller do
         post :create, user: user_params
 
         expect(controller).to have_received(:sign_in)
-        expect(response).to be_redirect
+        expect(response).to render_template('create')
       end
     end
   end
