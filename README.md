@@ -1,3 +1,8 @@
+# NOTE:
+
+# Beaker has been upgraded to be [rails-json-api](https://github.com/venables/rails-json-api).
+
+
 Beaker
 ======
 
